@@ -423,13 +423,41 @@ nav {
   #storageText {
     text-align: center;
   }
+
+  .gallery {
+    gap: 15px; /* Tighter gap on smaller viewports */
+  }
+
+  .card-img-wrapper {
+    height: 180px; /* Reduced vertical height so grid cards sit cleanly on mobile */
+  }
+
+  .card-body {
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .card-title {
+    font-size: 12px;
+  }
+
+  .small-btn {
+    padding: 8px 4px;
+    font-size: 11px;
+  }
+}
+
+/* Force exactly two cards per line on compact mobile systems */
+@media(max-width: 480px) {
+  .gallery {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
 }
 </style>
 </head>
 <body>
 
 <nav>
-  <!-- Clicking logo redirects directly to Upload Space homepage view -->
   <div class="logo" onclick="showUpload()">GitDrive</div>
   
   <button class="hamburger" id="hamburgerBtn" aria-label="Toggle Navigation">
@@ -444,7 +472,6 @@ nav {
     <button class="nav-btn active" id="menuUpload" onclick="showUpload()">Upload Space</button>
     <button class="nav-btn" id="menuGallery" onclick="showGallery()">Gallery View</button>
     
-    <!-- Light/Dark System Switch Button -->
     <button class="theme-toggle" id="themeToggleBtn" title="Toggle Theme">
       <svg id="themeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
     </button>
@@ -498,7 +525,6 @@ const GITHUB_USERNAME = "technow-byte";
 const REPO_NAME = "images-url";
 const BRANCH = "main";
 
-// Initialize Local Token Engine 
 let TOKEN = localStorage.getItem("GH_UP_TOKEN") || "";
 
 const dropArea = document.getElementById("dropArea");
@@ -520,7 +546,6 @@ const themeIcon = document.getElementById("themeIcon");
 
 let latestUrl = "";
 
-// PERSISTED LIGHT / DARK MODE CONFIGURATION SYSTEM
 const savedTheme = localStorage.getItem("app-theme") || "dark";
 document.documentElement.setAttribute("data-theme", savedTheme);
 updateThemeIcon(savedTheme);
@@ -535,15 +560,12 @@ themeToggleBtn.addEventListener("click", () => {
 
 function updateThemeIcon(theme) {
   if (theme === "light") {
-    // Render Moon Icon for toggling back to Dark
     themeIcon.innerHTML = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
   } else {
-    // Render Sun Icon for toggling back to Light
     themeIcon.innerHTML = `<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>`;
   }
 }
 
-// MOBILE HAMBURGER MENU INTERACTION
 hamburgerBtn.addEventListener("click", () => {
   navDropdown.classList.toggle("mobile-open");
 });
@@ -552,7 +574,6 @@ function closeMobileMenu() {
   navDropdown.classList.remove("mobile-open");
 }
 
-// TOKEN CONFIGURATION
 function checkToken() {
   if (!TOKEN) {
     setTimeout(() => { updateTokenPrompt(); }, 500);
@@ -570,7 +591,6 @@ function updateTokenPrompt() {
   closeMobileMenu();
 }
 
-// INTERACTION DRAG/DROP
 dropArea.addEventListener("dragover",(e)=>{
   e.preventDefault();
   dropArea.classList.add("dragover");
@@ -594,7 +614,6 @@ fileInput.addEventListener("change",()=>{
   }
 });
 
-// ROUTING NAVIGATION / HOME VIEWS
 function showUpload(){
   document.getElementById("uploadSection").classList.remove("hidden");
   document.getElementById("gallerySection").classList.add("hidden");
@@ -612,7 +631,6 @@ function showGallery(){
   closeMobileMenu();
 }
 
-// COPIER MECHANIC
 copyMainBtn.addEventListener("click",()=>{
   if(!latestUrl) return;
   navigator.clipboard.writeText(latestUrl);
@@ -622,7 +640,6 @@ copyMainBtn.addEventListener("click",()=>{
   },2000);
 });
 
-/* TRUE INTERACTIVE DATA STREAM UPLOAD PROCESSOR */
 function uploadImage(file){
   if(!TOKEN) {
     alert("Please assign a valid active GitHub Token configuration using the 'Set Token' interface panel first.");
@@ -675,7 +692,8 @@ function uploadImage(file){
           updateProgress(0);
         }, 1500);
 
-        updateStorage();
+        // Add a slight delay before updating capacity list to align with backend cache
+        setTimeout(() => { updateStorage(); }, 800);
       } else {
         let errMessage = "Bad Credentials / Expired Token Error.";
         try {
@@ -707,11 +725,11 @@ function updateProgress(percent){
   progressText.innerText = percent + "%";
 }
 
-// SEAMLESS RE-RENDERING GALLERY CONTROLLER (CLEAN VERBOSE UI)
 async function loadGallery(){
   if(!TOKEN) return;
   try{
-    const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/uploads?ref=${BRANCH}`;
+    // Append a timestamp parameter to break cache limitations instantly 
+    const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/uploads?ref=${BRANCH}&t=${Date.now()}`;
     const response = await fetch(url,{
       headers:{
         "Authorization":`Bearer ${TOKEN}`,
@@ -745,7 +763,6 @@ async function loadGallery(){
       const card = document.createElement("div");
       card.className = "card";
       
-      // Clean UI layout: Image URLs removed from layout view blocks completely
       card.innerHTML = `
         <div class="card-img-wrapper">
           <img src="${publicUrl}" alt="Asset Preview" loading="lazy">
@@ -782,7 +799,6 @@ async function loadGallery(){
   }
 }
 
-// INSTANT ASSET REMOVAL ENGINE (NO REFRESH REQUIRED)
 async function deleteImage(fileName, sha){
   try{
     const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/uploads/${fileName}`;
@@ -805,9 +821,11 @@ async function deleteImage(fileName, sha){
       throw new Error(parsedErr.message || "File clear action breakdown.");
     }
 
-    // Components state re-render seamlessly without requiring full window manual refreshes
-    await loadGallery();
-    await updateStorage();
+    // GitHub API requires a brief millisecond delay to clear system ref files completely
+    setTimeout(async () => {
+      await loadGallery();
+      await updateStorage();
+    }, 600);
   }
   catch(error){
     console.error(error);
@@ -815,11 +833,10 @@ async function deleteImage(fileName, sha){
   }
 }
 
-// CAPACITY STORAGE TRACKER
 async function updateStorage(){
   if(!TOKEN) return;
   try{
-    const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/uploads?ref=${BRANCH}`;
+    const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/uploads?ref=${BRANCH}&t=${Date.now()}`;
     const response = await fetch(url,{
       headers:{
         "Authorization":`Bearer ${TOKEN}`,
@@ -844,7 +861,6 @@ async function updateStorage(){
   }
 }
 
-// Initial Boot Sequence
 window.addEventListener("DOMContentLoaded", () => {
   checkToken();
   loadGallery();
