@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>GitHub Image Host</title>
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:Arial;
+  background:#f5f5f5;
+}
+
+nav{
+  background:#111;
+  color:white;
+  padding:15px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+nav h1{
+  font-size:22px;
+}
+
+.nav-right{
+  display:flex;
+  gap:15px;
+  align-items:center;
+}
+
+.nav-btn{
+  border:none;
+  padding:10px 15px;
+  border-radius:8px;
+  background:white;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.container{
+  max-width:1200px;
+  margin:auto;
+  padding:20px;
+}
+
+.upload-box{
+  background:white;
+  border:3px dashed #888;
+  border-radius:20px;
+  padding:40px;
+  text-align:center;
+  transition:0.3s;
+}
+
+.upload-box.dragover{
+  border-color:#0066ff;
+  background:#eaf1ff;
+}
+
+.upload-box input{
+  display:none;
+}
+
+.select-btn{
+  margin-top:15px;
+  border:none;
+  padding:12px 20px;
+  border-radius:10px;
+  background:#0066ff;
+  color:white;
+  cursor:pointer;
+  font-size:16px;
+}
+
+.progress-container{
+  margin-top:20px;
+  display:none;
+}
+
+.progress-bg{
+  width:100%;
+  height:28px;
+  background:#ddd;
+  border-radius:50px;
+  overflow:hidden;
+}
+
+.progress-bar{
+  width:0%;
+  height:100%;
+  background:#28a745;
+  transition:0.3s;
+}
+
+.progress-text{
+  margin-top:10px;
+  font-weight:bold;
+}
+
+.output-box{
+  background:white;
+  padding:20px;
+  margin-top:20px;
+  border-radius:15px;
+  word-break:break-all;
+}
+
+.output-box img{
+  width:100%;
+  max-width:350px;
+  margin-top:15px;
+  border-radius:15px;
+}
+
+.copy-btn{
+  margin-top:15px;
+  border:none;
+  padding:10px 15px;
+  border-radius:8px;
+  background:#111;
+  color:white;
+  cursor:pointer;
+}
+
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+  margin-top:30px;
+}
+
+.card{
+  background:white;
+  border-radius:15px;
+  overflow:hidden;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.card img{
+  width:100%;
+  height:220px;
+  object-fit:cover;
+}
+
+.card-body{
+  padding:15px;
+}
+
+.url-text{
+  font-size:12px;
+  margin-top:10px;
+  word-break:break-all;
+}
+
+.card-buttons{
+  display:flex;
+  gap:10px;
+  margin-top:15px;
+}
+
+.small-btn{
+  flex:1;
+  border:none;
+  padding:10px;
+  border-radius:8px;
+  color:white;
+  cursor:pointer;
+}
+
+.copy-small{
+  background:#007bff;
+}
+
+.delete-small{
+  background:#dc3545;
+}
+
+.hidden{
+  display:none;
+}
+
+.empty-text{
+  text-align:center;
+  margin-top:30px;
+  color:#666;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+
+  <h1>GitHub Image Host</h1>
+
+  <div class="nav-right">
+
+    <div id="storageText">
+      Storage Used: 0 MB
+    </div>
+
+    <button class="nav-btn" onclick="showUpload()">
+      Upload
+    </button>
+
+    <button class="nav-btn" onclick="showGallery()">
+      Gallery
+    </button>
+
+  </div>
+
+</nav>
+
+<div class="container">
+
+  <div id="uploadSection">
+
+    <div class="upload-box" id="dropArea">
+
+      <h2>Drag & Drop Image Here</h2>
+
+      <p style="margin-top:10px;">OR</p>
+
+      <input type="file" id="fileInput" accept="image/*">
+
+      <button class="select-btn"
+      onclick="document.getElementById('fileInput').click()">
+
+        Select Image
+
+      </button>
+
+    </div>
+
+    <div class="progress-container" id="progressContainer">
+
+      <div class="progress-bg">
+
+        <div class="progress-bar" id="progressBar"></div>
+
+      </div>
+
+      <div class="progress-text" id="progressText">
+        0%
+      </div>
+
+    </div>
+
+    <div class="output-box hidden" id="outputBox">
+
+      <h3>Uploaded Successfully</h3>
+
+      <div id="imageUrl"></div>
+
+      <!-- MAIN COPY BUTTON -->
+
+      <button class="copy-btn" id="copyMainBtn">
+        Copy URL
+      </button>
+
+      <br>
+
+      <img id="previewImage">
+
+    </div>
+
+  </div>
+
+  <div id="gallerySection" class="hidden">
+
+    <h2>Uploaded Images</h2>
+
+    <div class="gallery" id="gallery"></div>
+
+    <div class="empty-text" id="emptyText">
+
+      No Images Uploaded Yet
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+const GITHUB_USERNAME = "technow-byte";
+const REPO_NAME = "image-url";
+const BRANCH = "main";
+const TOKEN = "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";
+
+const dropArea = document.getElementById("dropArea");
+const fileInput = document.getElementById("fileInput");
+const progressContainer = document.getElementById("progressContainer");
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
+const outputBox = document.getElementById("outputBox");
+const imageUrl = document.getElementById("imageUrl");
+const previewImage = document.getElementById("previewImage");
+const copyMainBtn = document.getElementById("copyMainBtn");
+const gallery = document.getElementById("gallery");
+const emptyText = document.getElementById("emptyText");
+const storageText = document.getElementById("storageText");
+
+let latestUrl = "";
+
+// DRAG DROP
+
+dropArea.addEventListener("dragover",(e)=>{
+  e.preventDefault();
+  dropArea.classList.add("dragover");
+});
+
+dropArea.addEventListener("dragleave",()=>{
+  dropArea.classList.remove("dragover");
+});
+
+dropArea.addEventListener("drop",(e)=>{
+
+  e.preventDefault();
+
+  dropArea.classList.remove("dragover");
+
+  const files = e.dataTransfer.files;
+
+  if(files.length){
+    uploadImage(files[0]);
+  }
+
+});
+
+fileInput.addEventListener("change",()=>{
+
+  if(fileInput.files.length){
+    uploadImage(fileInput.files[0]);
+  }
+
+});
+
+// NAVIGATION
+
+function showUpload(){
+
+  document.getElementById("uploadSection")
+  .classList.remove("hidden");
+
+  document.getElementById("gallerySection")
+  .classList.add("hidden");
+
+}
+
+function showGallery(){
+
+  document.getElementById("uploadSection")
+  .classList.add("hidden");
+
+  document.getElementById("gallerySection")
+  .classList.remove("hidden");
+
+  loadGallery();
+
+}
+
+// MAIN COPY BUTTON
+
+copyMainBtn.addEventListener("click",()=>{
+
+  navigator.clipboard.writeText(latestUrl);
+
+  copyMainBtn.innerText = "Copied";
+
+  setTimeout(()=>{
+    copyMainBtn.innerText = "Copy URL";
+  },2000);
+
+});
+
+// UPLOAD IMAGE
+
+async function uploadImage(file){
+
+  if(!file.type.startsWith("image/")){
+    alert("Only image files allowed");
+    return;
+  }
+
+  progressContainer.style.display = "block";
+
+  updateProgress(10);
+
+  const reader = new FileReader();
+
+  reader.readAsDataURL(file);
+
+  reader.onload = async ()=>{
+
+    try{
+
+      updateProgress(25);
+
+      const base64Data = reader.result.split(",")[1];
+
+      const fileName =
+      Date.now() + "_" + file.name.replace(/\s+/g,"_");
+
+      const path = `uploads/${fileName}`;
+
+      const apiUrl =
+      `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${path}`;
+
+      updateProgress(50);
+
+      const response = await fetch(apiUrl,{
+
+        method:"PUT",
+
+        headers:{
+          "Authorization":`Bearer ${TOKEN}`,
+          "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+          message:`Upload ${fileName}`,
+          content:base64Data,
+          branch:BRANCH
+        })
+
+      });
+
+      if(!response.ok){
+        throw new Error("Upload failed");
+      }
+
+      updateProgress(100);
+
+      const publicUrl =
+      `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${REPO_NAME}/${BRANCH}/${path}`;
+
+      latestUrl = publicUrl;
+
+      imageUrl.innerHTML = `
+        <a href="${publicUrl}" target="_blank">
+          ${publicUrl}
+        </a>
+      `;
+
+      previewImage.src = publicUrl;
+
+      outputBox.classList.remove("hidden");
+
+      loadGallery();
+
+      updateStorage();
+
+    }
+    catch(error){
+
+      console.log(error);
+
+      alert("Upload failed");
+
+    }
+
+  }
+
+}
+
+function updateProgress(percent){
+
+  progressBar.style.width = percent + "%";
+
+  progressText.innerText = percent + "%";
+
+}
+
+// LOAD GALLERY
+
+async function loadGallery(){
+
+  gallery.innerHTML = "";
+
+  try{
+
+    const url =
+    `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/uploads`;
+
+    const response = await fetch(url,{
+      headers:{
+        "Authorization":`Bearer ${TOKEN}`
+      }
+    });
+
+    const files = await response.json();
+
+    if(!Array.isArray(files) || files.length === 0){
+
+      emptyText.style.display = "block";
+
+      return;
+
+    }
+
+    emptyText.style.display = "none";
+
+    files.reverse();
+
+    files.forEach(file=>{
+
+      const publicUrl =
+      `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${REPO_NAME}/${BRANCH}/uploads/${file.name}`;
+
+      const card = document.createElement("div");
+
+      card.className = "card";
+
+      card.innerHTML = `
+
+        <img src="${publicUrl}">
+
+        <div class="card-body">
+
+          <strong>${file.name}</strong>
+
+          <div class="url-text">
+            ${publicUrl}
+          </div>
+
+          <div class="card-buttons">
+
+            <!-- GALLERY COPY BUTTON -->
+
+            <button class="small-btn copy-small">
+
+              Copy
+
+            </button>
+
+            <button class="small-btn delete-small">
+
+              Delete
+
+            </button>
+
+          </div>
+
+        </div>
+
+      `;
+
+      const copyBtn =
+      card.querySelector(".copy-small");
+
+      const deleteBtn =
+      card.querySelector(".delete-small");
+
+      // COPY BUTTON
+
+      copyBtn.addEventListener("click",()=>{
+
+        navigator.clipboard.writeText(publicUrl);
+
+        copyBtn.innerText = "Copied";
+
+        setTimeout(()=>{
+          copyBtn.innerText = "Copy";
+        },1500);
+
+      });
+
+      // DELETE BUTTON
+
+      deleteBtn.addEventListener("click",async ()=>{
+
+        const confirmDelete =
+        confirm("Delete this image?");
+
+        if(!confirmDelete) return;
+
+        await deleteImage(file.name,file.sha);
+
+      });
+
+      gallery.appendChild(card);
+
+    });
+
+  }
+  catch(error){
+
+    console.log(error);
+
+  }
+
+}
+
+// DELETE IMAGE
+
+async function deleteImage(fileName,sha){
+
+  try{
+
+    const url =
+    `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/uploads/${fileName}`;
+
+    const response = await fetch(url,{
+
+      method:"DELETE",
+
+      headers:{
+        "Authorization":`Bearer ${TOKEN}`,
+        "Content-Type":"application/json"
+      },
+
+      body:JSON.stringify({
+        message:`Delete ${fileName}`,
+        sha:sha,
+        branch:BRANCH
+      })
+
+    });
+
+    if(!response.ok){
+      throw new Error("Delete failed");
+    }
+
+    loadGallery();
+
+    updateStorage();
+
+  }
+  catch(error){
+
+    console.log(error);
+
+    alert("Delete failed");
+
+  }
+
+}
+
+// STORAGE
+
+async function updateStorage(){
+
+  try{
+
+    const url =
+    `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/uploads`;
+
+    const response = await fetch(url,{
+      headers:{
+        "Authorization":`Bearer ${TOKEN}`
+      }
+    });
+
+    const files = await response.json();
+
+    let totalBytes = 0;
+
+    if(Array.isArray(files)){
+
+      files.forEach(file=>{
+        totalBytes += file.size;
+      });
+
+    }
+
+    const totalMB =
+    (totalBytes / (1024 * 1024)).toFixed(2);
+
+    storageText.innerText =
+    `Storage Used: ${totalMB} MB`;
+
+  }
+  catch(error){
+
+    console.log(error);
+
+  }
+
+}
+
+loadGallery();
+
+updateStorage();
+
+</script>
+
+</body>
+</html>
