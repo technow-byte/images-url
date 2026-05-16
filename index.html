@@ -457,7 +457,7 @@ nav h1 {
   <div id="gallerySection" class="hidden">
     <h2 class="gallery-title">Cloud Archive Assets</h2>
     <div class="gallery" id="gallery"></div>
-    <div class="empty-text" id="emptyText">No assets linked inside repository path directory yet.</div>
+    <div class="empty-text" id="emptyText">No images found in your 'uploads' folder yet.</div>
   </div>
 </div>
 
@@ -466,13 +466,8 @@ const GITHUB_USERNAME = "technow-byte";
 const REPO_NAME = "images-url";
 const BRANCH = "main";
 
-// Secure Token Context Logic Fallback
-let TOKEN = localStorage.getItem("GH_UP_TOKEN") || "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";
-
-// Cache token elements initially
-if(!localStorage.getItem("GH_UP_TOKEN") && TOKEN) {
-  localStorage.setItem("GH_UP_TOKEN", TOKEN);
-}
+// Secure Local Token Engine
+let TOKEN = localStorage.getItem("GH_UP_TOKEN") || "";
 
 const dropArea = document.getElementById("dropArea");
 const fileInput = document.getElementById("fileInput");
@@ -500,15 +495,15 @@ function closeMobileMenu() {
   navDropdown.classList.remove("mobile-open");
 }
 
-// TOKEN LOGIC
+// TOKEN CONFIGURATION
 function checkToken() {
   if (!TOKEN) {
-    updateTokenPrompt();
+    setTimeout(() => { updateTokenPrompt(); }, 500);
   }
 }
 
 function updateTokenPrompt() {
-  const userToken = prompt("Please enter your GitHub Personal Access Token (PAT):", TOKEN);
+  const userToken = prompt("Please enter your current active GitHub Personal Access Token (PAT):", TOKEN);
   if (userToken !== null) {
     TOKEN = userToken.trim();
     localStorage.setItem("GH_UP_TOKEN", TOKEN);
@@ -542,7 +537,7 @@ fileInput.addEventListener("change",()=>{
   }
 });
 
-// DESKTOP INTERACTION ROUTING
+// ROUTING NAVIGATION 
 function showUpload(){
   document.getElementById("uploadSection").classList.remove("hidden");
   document.getElementById("gallerySection").classList.add("hidden");
@@ -560,7 +555,7 @@ function showGallery(){
   closeMobileMenu();
 }
 
-// MAIN ACTIONS
+// COPIER MECHANIC
 copyMainBtn.addEventListener("click",()=>{
   if(!latestUrl) return;
   navigator.clipboard.writeText(latestUrl);
@@ -570,10 +565,11 @@ copyMainBtn.addEventListener("click",()=>{
   },2000);
 });
 
-/* NATIVE REAL PERCENTAGE UPLOAD WRAPPER EXECUTION */
+/* TRUE INTERACTIVE DATA STREAM UPLOAD PROCESSOR */
 function uploadImage(file){
   if(!TOKEN) {
-    alert("Please assign a valid GitHub access token configuration via interface first.");
+    alert("Please assign a valid active GitHub Token configuration using the 'Set Token' interface panel first.");
+    updateTokenPrompt();
     return;
   }
   if(!file.type.startsWith("image/")){
@@ -600,12 +596,11 @@ function uploadImage(file){
     xhr.setRequestHeader("Accept", "application/vnd.github+v3+json");
     xhr.setRequestHeader("Content-Type", "application/json");
 
-    // Tracks true upload data stream percentage
+    // Live Progress tracking
     xhr.upload.onprogress = function(e) {
       if (e.lengthComputable) {
         const percentComplete = Math.round((e.loaded / e.total) * 100);
-        // Cap progress at 95% until GitHub API fully writes file to architecture 
-        updateProgress(Math.min(percentComplete, 95));
+        updateProgress(Math.min(percentComplete, 95)); // Cap visually at 95% until server validates
       }
     };
 
@@ -626,12 +621,12 @@ function uploadImage(file){
 
         updateStorage();
       } else {
-        let errMessage = "Upload payload error configuration logic breakdown.";
+        let errMessage = "Bad Credentials / Expired Token Error.";
         try {
           const res = JSON.parse(xhr.responseText);
           errMessage = res.message || errMessage;
         } catch(e){}
-        alert("Operation aborted: " + errMessage);
+        alert("Operation aborted: " + errMessage + "\n\nYour GitHub token might have been automatically revoked. Please generate a clean token and input it via 'Set Token'.");
         progressContainer.style.display = "none";
       }
     };
@@ -656,7 +651,7 @@ function updateProgress(percent){
   progressText.innerText = percent + "%";
 }
 
-// GALLERY ARCHIVE ENGINE
+// SEAMLESS RE-RENDERING GALLERY CONTROLLER
 async function loadGallery(){
   if(!TOKEN) return;
   try{
@@ -674,7 +669,7 @@ async function loadGallery(){
       return;
     }
 
-    if(!response.ok) throw new Error("Could not parse target node file structure listings.");
+    if(!response.ok) throw new Error("Could not fetch repo assets list.");
 
     const files = await response.json();
     gallery.innerHTML = "";
@@ -695,7 +690,7 @@ async function loadGallery(){
       card.className = "card";
       card.innerHTML = `
         <div class="card-img-wrapper">
-          <img src="${publicUrl}" alt="Gallery asset content preview" loading="lazy">
+          <img src="${publicUrl}" alt="Asset Preview" loading="lazy">
         </div>
         <div class="card-body">
           <div class="card-title">${file.name}</div>
@@ -730,7 +725,7 @@ async function loadGallery(){
   }
 }
 
-// CLEAN BACKEND ASSET DELETION WITH STRUCTURAL RERENDER
+// INSTANT ASSET REMOVAL ENGINE (NO REFRESH REQUIRED)
 async function deleteImage(fileName, sha){
   try{
     const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/uploads/${fileName}`;
@@ -750,10 +745,10 @@ async function deleteImage(fileName, sha){
 
     if(!response.ok) {
       const parsedErr = await response.json();
-      throw new Error(parsedErr.message || "File clear state transaction mutation execution failure.");
+      throw new Error(parsedErr.message || "File clear action breakdown.");
     }
 
-    // Await complete layout updates without structural fallback refreshes
+    // Structural layout components re-render immediately without browser reloads
     await loadGallery();
     await updateStorage();
   }
@@ -763,7 +758,7 @@ async function deleteImage(fileName, sha){
   }
 }
 
-// CALCULATE STORAGE CAPACITY IN REAL TIME
+// REAL-TIME ACCURATE CAPACITY MONITOR
 async function updateStorage(){
   if(!TOKEN) return;
   try{
@@ -792,7 +787,7 @@ async function updateStorage(){
   }
 }
 
-// DOM Init Hook Context Configuration Engine
+// Initial Boot Sequence
 window.addEventListener("DOMContentLoaded", () => {
   checkToken();
   loadGallery();
