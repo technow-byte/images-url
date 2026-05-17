@@ -56,7 +56,7 @@ body {
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-/* HIGH-FIDELITY CONTINUOUS FLUID GRADIENT ENGINE */
+/* FLUID GRADIENT ENGINE */
 .liquid-bg-engine {
   position: fixed;
   inset: 0;
@@ -170,6 +170,13 @@ nav {
   font-weight: 400;
 }
 
+/* RE-ENGINEERED NAVIGATION GRID LINKS */
+.nav-links-cluster {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .nav-actions {
   display: flex;
   align-items: center;
@@ -185,7 +192,7 @@ nav {
   border: 1px solid rgba(6, 182, 212, 0.15);
   padding: 6px 14px;
   border-radius: 12px;
-  margin-right: 8px;
+  margin-right: 4px;
 }
 
 .dock-btn {
@@ -235,6 +242,7 @@ nav {
   border-color: var(--text-main);
 }
 
+/* MOBILE DROPDOWN STYLING SYSTEM */
 .hamburger {
   display: none;
   background: none;
@@ -242,13 +250,39 @@ nav {
   cursor: pointer;
   flex-direction: column;
   gap: 4px;
+  padding: 6px;
 }
 
 .hamburger span {
   width: 18px;
   height: 2px;
   background: var(--text-main);
-  transition: 0.2s ease;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+.mobile-navigation-matrix {
+  display: none;
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 0;
+  right: 0;
+  background: var(--surface-blur);
+  backdrop-filter: var(--panel-blur);
+  -webkit-backdrop-filter: var(--panel-blur);
+  border: 1px solid var(--border-neon);
+  border-radius: 20px;
+  padding: 16px;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: var(--layer-shadow);
+}
+
+.mobile-navigation-matrix.active {
+  display: flex;
 }
 
 /* HUB FRAME CONTAINER */
@@ -258,7 +292,7 @@ nav {
   padding: 60px 40px;
 }
 
-/* THE NEON HORIZON DROP-ZONE */
+/* NEON HORIZON DROP-ZONE */
 .hyper-dropzone {
   background: var(--surface-blur);
   backdrop-filter: var(--panel-blur);
@@ -320,6 +354,7 @@ nav {
   font-weight: 600;
   letter-spacing: -1.5px;
   margin-bottom: 8px;
+  min-height: 48px;
 }
 
 .zone-sub {
@@ -367,7 +402,7 @@ nav {
   transition: width 0.1s linear;
 }
 
-/* ADVANCED TRANSACTION TERMINAL OVERLAY */
+/* TRANSACTION TERMINAL CARD OVERLAY */
 .terminal-card {
   background: var(--surface-blur);
   backdrop-filter: var(--panel-blur);
@@ -462,7 +497,7 @@ nav {
   object-fit: contain;
 }
 
-/* PREMIUM GALLERY ECOSYSTEM */
+/* GALLERY INFRASTRUCTURE GRID */
 .section-header-block {
   display: flex;
   justify-content: space-between;
@@ -602,7 +637,7 @@ nav {
   font-size: 13px;
 }
 
-/* MICRO LAYERED CONFIGURATION OVERLAYS */
+/* OVERLAY MODAL SHIELDS */
 .overlay-shield {
   position: fixed;
   inset: 0;
@@ -727,10 +762,12 @@ nav {
 
 .hidden { display: none !important; }
 
-/* SYSTEM RESPONSIVENESS BUILD */
-@media(max-width: 900px) {
+/* LAYOUT CONFIG RESPONSIVENESS */
+@media(max-width: 1024px) {
+  .nav-links-cluster { display: none; }
+  .hamburger { display: flex; }
   .nav-dock-container { padding: 16px 16px 0; }
-  nav { padding: 12px 20px; }
+  nav { padding: 12px 20px; position: relative; }
   .telemetry-badge { display: none; }
   .app-workspace { padding: 40px 16px; }
   .hyper-dropzone { padding: 80px 20px; }
@@ -738,15 +775,12 @@ nav {
 }
 
 @media(max-width: 600px) {
-  .hamburger { display: flex; }
-  .nav-actions-desktop { display: none; }
   .gallery-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
-<!-- GRADIENT AMBIENT CANVAS LAYER -->
 <div class="liquid-bg-engine">
   <div class="liquid-orb orb-1"></div>
   <div class="liquid-orb orb-2"></div>
@@ -760,27 +794,42 @@ nav {
       <div class="logo">GitDrive<span>//Hub</span></div>
     </div>
     
+    <!-- RESTORED CORE NAVIGATION LINK GRID PACKET -->
+    <div class="nav-links-cluster">
+      <button class="dock-btn active" id="dockUpload" onclick="toggleWorkspace('upload')">Terminal Area</button>
+      <button class="dock-btn" id="dockGallery" onclick="toggleWorkspace('gallery')">Archive Index</button>
+    </div>
+
     <div class="nav-actions">
       <div class="telemetry-badge" id="telemetryBadge">Telemetry: 0.00 MB</div>
-      <div class="nav-actions-desktop">
-        <button class="dock-btn active" id="dockUpload" onclick="toggleWorkspace('upload')">Terminal Area</button>
-        <button class="dock-btn" id="dockGallery" onclick="toggleWorkspace('gallery')">Archive Index</button>
-        <button class="dock-btn dock-btn-accent" onclick="triggerVaultGate()">Identity Key</button>
-      </div>
-      <button class="action-icon-btn" id="canvasThemeToggle" style="margin-left: 8px;">
+      <button class="dock-btn dock-btn-accent" onclick="triggerVaultGate()">Identity Key</button>
+      <button class="action-icon-btn" id="canvasThemeToggle">
         <svg id="themeIconGlyph" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
       </button>
+      
+      <!-- MOBILE MENU HAMBURGER STRUCT -->
+      <button class="hamburger" id="mobileHamTrigger" onclick="toggleMobileNavbarLayout()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+
+    <!-- RESPONSIVE NAV ANCHOR DROPDOWN MODULE -->
+    <div class="mobile-navigation-matrix" id="mobileDropContainer">
+      <button class="dock-btn active" id="mobDockUpload" onclick="toggleWorkspace('upload'); toggleMobileNavbarLayout()">Terminal Area</button>
+      <button class="dock-btn" id="mobDockGallery" onclick="toggleWorkspace('gallery'); toggleMobileNavbarLayout()">Archive Index</button>
     </div>
   </nav>
 </div>
 
 <div class="app-workspace">
-  <!-- INTERFACE PANEL: UPLOAD CONSOLE -->
+  <!-- CONSOLE HUB: FILING / DRAG SYSTEM -->
   <div id="panelUploadSpace">
     <div class="hyper-dropzone" id="dropZoneContainer" onclick="triggerFilePicker()">
       <div class="zone-decor-ring"></div>
       <div class="zone-content">
-        <h2 class="zone-headline" id="cyclicalTypingText">Initialize Asset Feed</h2>
+        <h2 class="zone-headline" id="cyclicalTypingText"> </h2>
         <p class="zone-sub">Drop standard matrix image elements inside perimeter</p>
         <input type="file" id="binaryInput" accept="image/*" class="hidden">
         <button class="action-terminal-btn" onclick="event.stopPropagation(); triggerFilePicker()">Scan Filesystem</button>
@@ -812,7 +861,7 @@ nav {
     </div>
   </div>
 
-  <!-- INTERFACE PANEL: ARCHIVE VIEW -->
+  <!-- CONSOLE HUB: GRID REPOSITORIES -->
   <div id="panelGallerySpace" class="hidden">
     <div class="section-header-block">
       <h2 class="section-title">Indexed Repositories</h2>
@@ -823,7 +872,7 @@ nav {
   </div>
 </div>
 
-<!-- OVERLAY SHIELD: KEY AUTH SYSTEM -->
+<!-- SECURE CRYPTO CONFIG OVERLAY -->
 <div class="overlay-shield" id="vaultGateOverlay">
   <div class="vault-modal">
     <div class="vault-icon vault-icon-secure">
@@ -841,7 +890,7 @@ nav {
   </div>
 </div>
 
-<!-- OVERLAY SHIELD: PURGE ACTION TERMINATION -->
+<!-- DATA PURGE TERMINAL VERIFICATION SYSTEM -->
 <div class="overlay-shield" id="purgeConfirmationOverlay">
   <div class="vault-modal">
     <div class="vault-icon">
@@ -856,7 +905,7 @@ nav {
   </div>
 </div>
 
-<!-- OVERLAY SHIELD: NOTIFICATION ALERTS -->
+<!-- SYSTEM RUNTIME SYSTEM ALERTS LOG -->
 <div class="overlay-shield" id="noticeOverlaySystem">
   <div class="vault-modal">
     <div class="vault-icon" style="background:rgba(6,182,212,0.1); color:var(--neon-cyan);">
@@ -892,7 +941,7 @@ const archiveMetrics = document.getElementById("archiveMetrics");
 let cachedUrlPath = "";
 let purgeBlockRef = null;
 
-// CANVAS APP MOOD STATE CONFIG
+// CANVAS THEME AND MOOD SWITCHER LOGIC
 const systemTheme = localStorage.getItem("sys-theme-engine") || "dark";
 document.documentElement.setAttribute("data-theme", systemTheme);
 refreshThemeIconGlyph(systemTheme);
@@ -912,6 +961,13 @@ function refreshThemeIconGlyph(themeState) {
   } else {
     glyph.innerHTML = `<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>`;
   }
+}
+
+function toggleMobileNavbarLayout() {
+  const trig = document.getElementById("mobileHamTrigger");
+  const menu = document.getElementById("mobileDropContainer");
+  trig.classList.toggle("open");
+  menu.classList.toggle("active");
 }
 
 function runtimeDisplayNotice(headline, infoLog) {
@@ -944,19 +1000,24 @@ function commitVaultKey() {
 function toggleWorkspace(workspaceMode) {
   const panelUpload = document.getElementById("panelUploadSpace");
   const panelGallery = document.getElementById("panelGallerySpace");
-  const dockUpload = document.getElementById("dockUpload");
-  const dockGallery = document.getElementById("dockGallery");
+  
+  const docks = [
+    document.getElementById("dockUpload"), document.getElementById("dockGallery"),
+    document.getElementById("mobDockUpload"), document.getElementById("mobDockGallery")
+  ];
+
+  docks.forEach(d => d && d.classList.remove("active"));
 
   if(workspaceMode === 'upload') {
     panelUpload.classList.remove("hidden");
     panelGallery.classList.add("hidden");
-    dockUpload.classList.add("active");
-    dockGallery.classList.remove("active");
+    document.getElementById("dockUpload").classList.add("active");
+    document.getElementById("mobDockUpload").classList.add("active");
   } else {
     panelUpload.classList.add("hidden");
     panelGallery.classList.remove("hidden");
-    dockUpload.classList.remove("active");
-    dockGallery.classList.add("active");
+    document.getElementById("dockGallery").classList.add("active");
+    document.getElementById("mobDockGallery").classList.add("active");
     syncArchiveEcosystem();
   }
 }
@@ -1222,33 +1283,39 @@ window.addEventListener("DOMContentLoaded", () => {
   initCyclingTypographyEngine();
 });
 
+// BUG-FIXED SYSTEM TYPEWRITING TIMELINE ENGINE
 function initCyclingTypographyEngine() {
   const dictionary = ["Initialize Asset Feed", "Deploy Binary Packets", "Host Through Git Infra"];
-  let sequence = 0, character = 0, reversing = false;
+  let sequence = 0;
+  let character = 0;
+  let reversing = false;
   const mountTarget = document.getElementById("cyclicalTypingText");
   
   function step() {
     const structuralString = dictionary[sequence];
+    
     if (reversing) {
-      mountTarget.innerText = structuralString.substring(0, character - 1);
       character--;
     } else {
-      mountTarget.innerText = structuralString.substring(0, character + 1);
       character++;
     }
     
-    let intervals = reversing ? 35 : 75;
+    mountTarget.textContent = structuralString.slice(0, character);
+    
+    let intervals = reversing ? 40 : 80;
     
     if (!reversing && character === structuralString.length) {
-      intervals = 2500;
+      intervals = 2000; // Delay before starting to backspace
       reversing = true;
     } else if (reversing && character === 0) {
       reversing = false;
       sequence = (sequence + 1) % dictionary.length;
-      intervals = 400;
+      intervals = 300; // Delay before typing next word
     }
+    
     setTimeout(step, intervals);
   }
+  
   step();
 }
 </script>
