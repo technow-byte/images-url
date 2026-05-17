@@ -3,1357 +3,1253 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GitDrive — Premium Cloud Storage</title>
+<title>GitDrive // Next-Gen Cloud Asset Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  /* Premium Dark Theme */
-  --bg-window: #06070d;
-  --panel-bg: rgba(13, 15, 26, 0.7);
-  --panel-card: rgba(22, 25, 43, 0.65);
-  --panel-inner: rgba(8, 9, 16, 0.5);
-  --border-glow: rgba(255, 255, 255, 0.07);
-  --accent-primary: #a78bfa;
-  --accent-secondary: #f472b6;
-  --accent-cyan: #22d3ee;
-  --text-primary: #f8fafc;
-  --text-muted: #94a3b8;
-  --success: #34d399;
-  --danger: #fb7185;
-  --warning: #fbbf24;
-  --glass-blur: blur(24px);
-  --box-shadow: 0 24px 50px -12px rgba(0, 0, 0, 0.6);
+  --bg-core: #040508;
+  --surface-blur: rgba(10, 11, 18, 0.45);
+  --surface-card: rgba(18, 20, 32, 0.55);
+  --surface-inner: rgba(6, 7, 12, 0.6);
+  --border-neon: rgba(255, 255, 255, 0.05);
+  
+  /* Cosmic Avant-Garde Palette */
+  --neon-indigo: #6366f1;
+  --neon-pink: #f43f5e;
+  --neon-cyan: #06b6d4;
+  --text-main: #f8fafc;
+  --text-dim: #64748b;
+  --system-green: #10b981;
+  --system-red: #ef4444;
+  
+  --panel-blur: blur(30px);
+  --layer-shadow: 0 40px 100px -30px rgba(0, 0, 0, 0.85);
 }
 
 [data-theme="light"] {
-  /* Premium Light Theme Override */
-  --bg-window: #f1f3f9;
-  --panel-bg: rgba(255, 255, 255, 0.8);
-  --panel-card: rgba(241, 245, 249, 0.9);
-  --panel-inner: rgba(255, 255, 255, 0.6);
-  --border-glow: rgba(15, 23, 42, 0.08);
-  --accent-primary: #6366f1;
-  --accent-secondary: #db2777;
-  --accent-cyan: #0891b2;
-  --text-primary: #0f172a;
-  --text-muted: #64748b;
-  --box-shadow: 0 24px 50px -16px rgba(15, 23, 42, 0.08);
+  --bg-core: #f4f6fa;
+  --surface-blur: rgba(255, 255, 255, 0.5);
+  --surface-card: rgba(241, 245, 249, 0.8);
+  --surface-inner: rgba(255, 255, 255, 0.7);
+  --border-neon: rgba(15, 23, 42, 0.06);
+  --text-main: #0f172a;
+  --text-dim: #64748b;
+  --layer-shadow: 0 30px 70px -20px rgba(15, 23, 42, 0.06);
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
+  outline: none;
 }
 
 body {
-  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-  color: var(--text-primary);
-  background-color: var(--bg-window);
-  line-height: 1.5;
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--text-main);
+  background-color: var(--bg-core);
   min-height: 100vh;
-  position: relative;
   overflow-x: hidden;
-  transition: color 0.3s ease;
+  position: relative;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-/* DYNAMIC CONTINUOUS COLOR CHANGING BACKGROUND GRADIENT EFFECT */
-body::before {
-  content: "";
+/* HIGH-FIDELITY CONTINUOUS FLUID GRADIENT ENGINE */
+.liquid-bg-engine {
   position: fixed;
   inset: 0;
-  z-index: -2;
-  background: linear-gradient(125deg, #0f1123, #150f24, #0b1424, #180d19);
-  background-size: 400% 400%;
-  animation: continuousFluidGradient 16s ease infinite;
-}
-
-[data-theme="light"] body::before {
-  background: linear-gradient(125deg, #e0e4f0, #eae2f4, #dbe9f4, #ebdcf0);
-  background-size: 400% 400%;
-}
-
-@keyframes continuousFluidGradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* DEEP LIGHT BLURS FOR EXTRA SHIFTING GLOW */
-body::after {
-  content: "";
-  position: fixed;
-  top: 15%;
-  left: 20%;
-  width: 45vw;
-  height: 45vw;
-  background: radial-gradient(circle, rgba(167, 139, 250, 0.12) 0%, transparent 70%);
   z-index: -1;
+  overflow: hidden;
   pointer-events: none;
-  animation: dynamicPulseOrb 25s infinite alternate ease-in-out;
+  filter: blur(140px);
+  opacity: 0.75;
 }
 
-@keyframes dynamicPulseOrb {
-  0% { transform: translate(0, 0) scale(1); filter: blur(40px); }
-  100% { transform: translate(10vw, -5vw) scale(1.2); filter: blur(60px); }
+.liquid-orb {
+  position: absolute;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  animation: fluidMotion infinite alternate ease-in-out;
 }
 
-/* NAVBAR PLATFORM */
+.orb-1 {
+  width: 60vw;
+  height: 60vw;
+  top: -20%;
+  left: -10%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, transparent 70%);
+  animation-duration: 22s;
+}
+
+.orb-2 {
+  width: 50vw;
+  height: 50vw;
+  bottom: -10%;
+  right: -5%;
+  background: radial-gradient(circle, rgba(244, 63, 94, 0.2) 0%, transparent 70%);
+  animation-duration: 28s;
+}
+
+.orb-3 {
+  width: 40vw;
+  height: 40vw;
+  top: 40%;
+  left: 50%;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.2) 0%, transparent 70%);
+  animation-duration: 18s;
+}
+
+[data-theme="light"] .liquid-orb {
+  mix-blend-mode: multiply;
+  opacity: 0.6;
+}
+
+@keyframes fluidMotion {
+  0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  50% { transform: translate(8vw, -5vw) scale(1.15) rotate(180deg); }
+  100% { transform: translate(-4vw, 10vw) scale(0.9) rotate(360deg); }
+}
+
+/* STRUCTURAL FLOATING NAV DOCK */
+.nav-dock-container {
+  width: 100%;
+  padding: 24px 40px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
 nav {
-  background: var(--panel-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  padding: 16px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: var(--surface-blur);
+  backdrop-filter: var(--panel-blur);
+  -webkit-backdrop-filter: var(--panel-blur);
+  border: 1px solid var(--border-neon);
+  padding: 14px 28px;
+  border-radius: 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: sticky;
-  top: 0;
-  border-bottom: 1px solid var(--border-glow);
-  z-index: 100;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+  box-shadow: var(--layer-shadow);
+}
+
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.brand-icon {
+  width: 14px;
+  height: 14px;
+  background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
+  border-radius: 4px;
+  transform: rotate(45deg);
+  animation: pulseCore 3s infinite ease-in-out;
+}
+
+@keyframes pulseCore {
+  0%, 100% { transform: rotate(45deg) scale(1); }
+  50% { transform: rotate(45deg) scale(1.25); }
 }
 
 .logo {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 26px;
+  font-size: 20px;
   font-weight: 700;
-  letter-spacing: -1.2px;
-  cursor: pointer;
-  user-select: none;
-  background: linear-gradient(90deg, var(--text-primary), var(--accent-primary), var(--accent-secondary), var(--text-primary));
-  background-size: 300% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: cosmicLogo Shift 8s linear infinite;
+  letter-spacing: -0.5px;
+  font-family: 'Space Grotesk', sans-serif;
+  text-transform: uppercase;
 }
 
-@keyframes cosmicLogoShift {
-  0% { background-position: 0% center; }
-  100% { background-position: 300% center; }
+.logo span {
+  color: var(--text-dim);
+  font-weight: 400;
 }
 
-/* RESPONSIVE MOBILE NAVIGATION HAMBURGER */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 8px;
-  position: relative;
-  z-index: 101;
-}
-
-.hamburger span {
-  width: 22px;
-  height: 2px;
-  background: var(--text-primary);
-  border-radius: 4px;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
-}
-
-.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-.hamburger.open span:nth-child(2) { opacity: 0; }
-.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-.nav-right {
+.nav-actions {
   display: flex;
-  gap: 10px;
   align-items: center;
+  gap: 8px;
 }
 
-#storageText {
-  font-size: 13px;
-  font-weight: 600;
-  background: var(--panel-inner);
+.telemetry-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--neon-cyan);
+  background: rgba(6, 182, 212, 0.08);
+  border: 1px solid rgba(6, 182, 212, 0.15);
+  padding: 6px 14px;
+  border-radius: 12px;
+  margin-right: 8px;
+}
+
+.dock-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-dim);
   padding: 8px 18px;
   border-radius: 12px;
-  color: var(--text-muted);
-  border: 1px solid var(--border-glow);
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.nav-btn {
-  border: 1px solid transparent;
-  padding: 9px 18px;
-  border-radius: 12px;
-  background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
+  font-size: 13px;
   font-weight: 600;
-  font-size: 14px;
+  cursor: pointer;
   font-family: 'Space Grotesk', sans-serif;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.nav-btn:hover, .nav-btn.active {
-  color: var(--text-primary);
-  background: var(--panel-card);
-  border-color: var(--border-glow);
+.dock-btn:hover, .dock-btn.active {
+  color: var(--text-main);
+  background: var(--surface-card);
+  border-color: var(--border-neon);
 }
 
-.token-btn {
-  background: linear-gradient(135deg, #f59e0b, #d97706) !important;
-  color: #fff !important;
-  border: none;
-  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
+.dock-btn-accent {
+  background: var(--text-main) !important;
+  color: var(--bg-core) !important;
 }
 
-.token-btn:hover {
+.dock-btn-accent:hover {
+  opacity: 0.9;
   transform: translateY(-1px);
-  box-shadow: 0 8px 25px rgba(245, 158, 11, 0.35);
 }
 
-.theme-toggle {
-  background: var(--panel-inner);
-  border: 1px solid var(--border-glow);
-  cursor: pointer;
-  color: var(--text-primary);
-  padding: 9px;
+.action-icon-btn {
+  background: var(--surface-inner);
+  border: 1px solid var(--border-neon);
+  color: var(--text-main);
+  padding: 8px;
   border-radius: 12px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
 }
 
-.theme-toggle:hover {
-  background: var(--panel-card);
-  border-color: var(--text-primary);
+.action-icon-btn:hover {
+  background: var(--surface-card);
+  border-color: var(--text-main);
 }
 
-/* SITE WRAPPER */
-.container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 60px 30px;
-}
-
-/* ELEVATED UPLOAD STUDIO PANEL */
-.upload-box {
-  background: var(--panel-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px dashed rgba(255, 255, 255, 0.15);
-  border-radius: 32px;
-  padding: 100px 40px;
-  text-align: center;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  cursor: pointer;
-  box-shadow: var(--box-shadow);
-}
-
-[data-theme="light"] .upload-box {
-  border-dasharray: 6;
-  border-color: rgba(0, 0, 0, 0.15);
-}
-
-.upload-box:hover, .upload-box.dragover {
-  border-color: var(--accent-primary);
-  background: var(--panel-card);
-  transform: scale(1.005) translateY(-2px);
-  box-shadow: 0 35px 70px -15px rgba(167, 139, 250, 0.15);
-}
-
-.upload-box h2 {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 32px;
-  font-weight: 600;
-  margin-bottom: 12px;
-  letter-spacing: -0.8px;
-  min-height: 48px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Built-in terminal active cursor block for continuous type cycle */
-.upload-box h2::after {
-  content: "";
-  display: inline-block;
-  width: 3px;
-  height: 28px;
-  margin-left: 8px;
-  background-color: var(--accent-primary);
-  animation: cursorPulseFrame 0.8s infinite steps(2);
-}
-
-@keyframes cursorPulseFrame {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-.upload-box p {
-  color: var(--text-muted);
-  font-size: 14px;
-  margin-bottom: 24px;
-  font-weight: 500;
-}
-
-.upload-box input { display: none; }
-
-.select-btn {
-  border: none;
-  padding: 14px 36px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-  color: white;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 700;
-  font-family: 'Space Grotesk', sans-serif;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 20px rgba(167, 139, 250, 0.25);
-}
-
-.select-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(167, 139, 250, 0.4);
-}
-
-/* NATIVE HARDWARE PROGRESS SYSTEM */
-.progress-container {
-  margin-top: 40px;
+.hamburger {
   display: none;
-  background: var(--panel-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  padding: 24px;
-  border-radius: 20px;
-  border: 1px solid var(--border-glow);
-  box-shadow: var(--box-shadow);
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.progress-bg {
+.hamburger span {
+  width: 18px;
+  height: 2px;
+  background: var(--text-main);
+  transition: 0.2s ease;
+}
+
+/* HUB FRAME CONTAINER */
+.app-workspace {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 60px 40px;
+}
+
+/* THE NEON HORIZON DROP-ZONE */
+.hyper-dropzone {
+  background: var(--surface-blur);
+  backdrop-filter: var(--panel-blur);
+  -webkit-backdrop-filter: var(--panel-blur);
+  border: 1px solid var(--border-neon);
+  border-radius: 32px;
+  padding: 120px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: var(--layer-shadow);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.5s ease;
+}
+
+.hyper-dropzone::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 32px;
+  padding: 1px;
+  background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.hyper-dropzone.dragover {
+  border-color: var(--neon-indigo);
+  transform: scale(0.99);
+}
+
+.zone-decor-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  width: 300px;
+  height: 300px;
+  border: 1px dashed rgba(255, 255, 255, 0.03);
+  border-radius: 50%;
+  pointer-events: none;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hyper-dropzone.dragover .zone-decor-ring {
+  transform: translate(-50%, -50%) scale(1.3);
+  border-color: rgba(99, 102, 241, 0.15);
+}
+
+.zone-content {
+  position: relative;
+  z-index: 2;
+}
+
+.zone-headline {
+  font-size: 38px;
+  font-weight: 600;
+  letter-spacing: -1.5px;
+  margin-bottom: 8px;
+}
+
+.zone-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 32px;
+}
+
+/* REALTIME TELEMETRY SYSTEM */
+.telemetry-pipeline {
+  margin-top: 32px;
+  background: var(--surface-blur);
+  backdrop-filter: var(--panel-blur);
+  -webkit-backdrop-filter: var(--panel-blur);
+  border: 1px solid var(--border-neon);
+  padding: 24px;
+  border-radius: 24px;
+  display: none;
+  box-shadow: var(--layer-shadow);
+}
+
+.pipeline-meta {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+
+.pipeline-track {
   width: 100%;
-  height: 6px;
-  background: var(--panel-inner);
-  border-radius: 100px;
+  height: 4px;
+  background: var(--surface-inner);
+  border-radius: 10px;
   overflow: hidden;
 }
 
-.progress-bar {
+.pipeline-fill {
   width: 0%;
   height: 100%;
-  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary), var(--accent-cyan));
-  border-radius: 100px;
+  background: linear-gradient(90deg, var(--neon-indigo), var(--neon-cyan));
+  border-radius: 10px;
   transition: width 0.1s linear;
 }
 
-.progress-text {
-  margin-top: 14px;
-  font-weight: 700;
-  font-size: 13px;
-  text-align: center;
-  color: var(--text-muted);
-  font-family: 'JetBrains Mono', monospace;
-}
-
-/* TRANSACTION COMPLETED OUTPUT FIELD */
-.output-box {
-  background: var(--panel-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  padding: 36px;
-  margin-top: 40px;
+/* ADVANCED TRANSACTION TERMINAL OVERLAY */
+.terminal-card {
+  background: var(--surface-blur);
+  backdrop-filter: var(--panel-blur);
+  -webkit-backdrop-filter: var(--panel-blur);
+  border: 1px solid rgba(16, 185, 129, 0.2);
   border-radius: 28px;
-  border: 1px solid rgba(52, 211, 153, 0.25);
-  box-shadow: var(--box-shadow);
+  padding: 32px;
+  margin-top: 32px;
+  box-shadow: var(--layer-shadow);
 }
 
-.output-header {
+.terminal-status-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  color: var(--success);
-  font-weight: 700;
-  margin-bottom: 24px;
-  font-size: 16px;
-  font-family: 'Space Grotesk', sans-serif;
+  gap: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--system-green);
+  margin-bottom: 20px;
+  text-transform: uppercase;
 }
 
-.url-display-wrapper {
+.status-pulse {
+  width: 6px;
+  height: 6px;
+  background: var(--system-green);
+  border-radius: 50%;
+  animation: beacon 1.5s infinite;
+}
+
+@keyframes beacon {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+.terminal-input-group {
   display: flex;
-  background: var(--panel-inner);
-  padding: 12px 18px;
-  border-radius: 14px;
+  background: var(--surface-inner);
+  border: 1px solid var(--border-neon);
+  border-radius: 16px;
+  padding: 8px 8px 8px 16px;
   align-items: center;
   gap: 12px;
   margin-bottom: 24px;
-  border: 1px solid var(--border-glow);
 }
 
-#imageUrl {
+.terminal-url-anchor {
   flex: 1;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
 }
 
-#imageUrl a {
-  color: var(--accent-cyan);
+.terminal-url-anchor a {
+  color: var(--neon-cyan);
   text-decoration: none;
 }
 
-.copy-btn {
-  border: none;
-  padding: 10px 20px;
-  border-radius: 10px;
-  background: var(--panel-card);
-  color: var(--text-primary);
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 700;
+.action-terminal-btn {
+  background: var(--surface-card);
+  border: 1px solid var(--border-neon);
+  color: var(--text-main);
   font-family: 'Space Grotesk', sans-serif;
-  white-space: nowrap;
-  transition: all 0.2s ease;
-  border: 1px solid var(--border-glow);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-.copy-btn:hover {
-  background: var(--text-primary);
-  color: var(--bg-window);
-  border-color: transparent;
+.action-terminal-btn:hover {
+  background: var(--text-main);
+  color: var(--bg-core);
 }
 
-.preview-container {
+.terminal-viewscreen {
+  background: var(--surface-inner);
+  border: 1px solid var(--border-neon);
+  border-radius: 16px;
+  padding: 16px;
   display: flex;
   justify-content: center;
-  background: var(--panel-inner);
-  padding: 24px;
-  border-radius: 20px;
-  border: 1px solid var(--border-glow);
 }
 
-.preview-container img {
+.terminal-viewscreen img {
   max-width: 100%;
-  max-height: 400px;
-  border-radius: 14px;
+  max-height: 380px;
+  border-radius: 8px;
   object-fit: contain;
 }
 
 /* PREMIUM GALLERY ECOSYSTEM */
-.gallery-title {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 36px;
-  font-weight: 700;
+.section-header-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
   margin-bottom: 40px;
+}
+
+.section-title {
+  font-size: 32px;
+  font-weight: 600;
   letter-spacing: -1px;
 }
 
-.gallery {
+.section-counter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 32px;
 }
 
-.card {
-  background: var(--panel-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border-radius: 28px;
+.asset-card {
+  background: var(--surface-blur);
+  backdrop-filter: var(--panel-blur);
+  -webkit-backdrop-filter: var(--panel-blur);
+  border: 1px solid var(--border-neon);
+  border-radius: 24px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--border-glow);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
-  box-shadow: var(--box-shadow);
+  box-shadow: var(--layer-shadow);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s;
 }
 
-.card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 40px 60px -20px rgba(0, 0, 0, 0.5);
+.asset-card:hover {
+  transform: translateY(-6px);
   border-color: rgba(255, 255, 255, 0.15);
 }
 
-[data-theme="light"] .card:hover {
-  box-shadow: 0 30px 60px -20px rgba(15, 23, 42, 0.12);
-  border-color: rgba(0, 0, 0, 0.15);
-}
-
-.card-img-wrapper {
-  width: 100%;
-  height: 240px;
-  background: var(--panel-inner);
-  overflow: hidden;
+.asset-screen {
   position: relative;
+  width: 100%;
+  height: 220px;
+  background: var(--surface-inner);
+  overflow: hidden;
 }
 
-.watermark {
+.asset-badge {
   position: absolute;
   top: 14px;
-  right: 14px;
-  background: rgba(8, 9, 16, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #fff;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 5px 12px;
-  border-radius: 100px;
-  z-index: 5;
+  left: 14px;
+  background: rgba(4, 5, 8, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.06);
+  color: var(--text-main);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  z-index: 10;
 }
 
-[data-theme="light"] .watermark {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  color: #0f172a;
-}
-
-.card img {
+.asset-screen img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: grayscale(0.2);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s;
 }
 
-.card:hover .card-img-wrapper img {
-  transform: scale(1.04);
+.asset-card:hover .asset-screen img {
+  transform: scale(1.05);
+  filter: grayscale(0);
 }
 
-.card-body {
-  padding: 24px;
+.asset-meta-box {
+  padding: 20px;
   display: flex;
   flex-direction: column;
+  gap: 16px;
   flex-grow: 1;
-  gap: 20px;
 }
 
-.card-title {
-  font-size: 13px;
+.asset-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: var(--text-primary);
-  font-family: 'JetBrains Mono', monospace;
 }
 
-.card-buttons {
+.asset-control-row {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   margin-top: auto;
 }
 
-.small-btn {
+.control-btn {
   flex: 1;
-  border: none;
-  padding: 12px;
-  border-radius: 12px;
-  color: white;
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 13px;
+  border: 1px solid var(--border-neon);
+  background: var(--surface-inner);
+  color: var(--text-main);
+  padding: 10px;
+  border-radius: 10px;
   font-family: 'Space Grotesk', sans-serif;
-  transition: all 0.2s, transform 0.1s;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-.small-btn:active { transform: scale(0.96); }
-
-.copy-small { 
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary)); 
-  box-shadow: 0 4px 15px rgba(167, 139, 250, 0.2);
-}
-.copy-small:hover { opacity: 0.95; }
-
-.delete-small { 
-  background: rgba(251, 113, 133, 0.06); 
-  color: var(--danger);
-  border: 1px solid rgba(251, 113, 133, 0.2);
-}
-.delete-small:hover {
-  background: var(--danger);
-  color: white;
+.control-btn-primary {
+  background: var(--text-main);
+  color: var(--bg-core);
   border-color: transparent;
 }
 
-.hidden { display: none !important; }
+.control-btn-primary:hover { opacity: 0.9; }
 
-.empty-text {
-  text-align: center;
-  padding: 120px 20px;
-  color: var(--text-muted);
-  font-size: 16px;
-  font-weight: 500;
+.control-btn-danger:hover {
+  background: var(--system-red);
+  color: #fff;
+  border-color: transparent;
 }
 
-/* MICRO GLASS LAYERED DIALOGS */
-.modal-overlay {
+.void-msg {
+  text-align: center;
+  grid-column: 1 / -1;
+  padding: 100px 20px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-dim);
+  font-size: 13px;
+}
+
+/* MICRO LAYERED CONFIGURATION OVERLAYS */
+.overlay-shield {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(4, 5, 9, 0.5);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  inset: 0;
+  background: rgba(3, 4, 6, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 2000;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.3s ease;
 }
-.modal-overlay.modal-open {
+
+.overlay-shield.active {
   opacity: 1;
   pointer-events: auto;
 }
-.modal-card {
-  background: var(--panel-bg);
-  border: 1px solid var(--border-glow);
+
+.vault-modal {
+  background: var(--surface-blur);
+  border: 1px solid var(--border-neon);
+  border-radius: 28px;
   padding: 40px;
-  border-radius: 32px;
-  max-width: 450px;
+  max-width: 460px;
   width: 90%;
-  text-align: center;
-  box-shadow: 0 50px 100px -20px rgba(0,0,0,0.7);
-  transform: translateY(20px) scale(0.96);
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: var(--layer-shadow);
+  transform: translateY(15px) scale(0.98);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.modal-overlay.modal-open .modal-card {
+
+.overlay-shield.active .vault-modal {
   transform: translateY(0) scale(1);
 }
-.modal-icon {
-  width: 56px;
-  height: 56px;
-  background: rgba(251, 113, 133, 0.1);
-  color: var(--danger);
-  border-radius: 16px;
+
+.vault-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(244, 63, 94, 0.1);
+  color: var(--neon-pink);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 24px;
-}
-.modal-icon.token-icon-style {
-  background: rgba(251, 191, 36, 0.1);
-  color: var(--warning);
-}
-.modal-card h3 {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 12px;
-}
-.modal-card p {
-  color: var(--text-muted);
-  font-size: 14px;
-  margin-bottom: 28px;
-  word-break: break-all;
+  margin: 0 auto 20px;
 }
 
-/* PROTECTION INPUT CONFIG */
-.token-input-wrapper {
-  position: relative;
-  width: 100%;
-  margin-bottom: 28px;
-  display: flex;
-  align-items: center;
+.vault-icon-secure {
+  background: rgba(6, 182, 212, 0.1);
+  color: var(--neon-cyan);
 }
-.token-input {
+
+.vault-modal h3 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.vault-modal p {
+  font-size: 14px;
+  color: var(--text-dim);
+  text-align: center;
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.vault-input-container {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.vault-input {
   width: 100%;
-  padding: 14px 46px 14px 18px;
-  background: var(--panel-inner);
-  border: 1px solid var(--border-glow);
-  border-radius: 14px;
-  color: var(--text-primary);
+  padding: 14px 16px;
+  background: var(--surface-inner);
+  border: 1px solid var(--border-neon);
+  border-radius: 12px;
+  color: var(--text-main);
   font-family: 'JetBrains Mono', monospace;
   font-size: 13px;
-  outline: none;
-  transition: border-color 0.2s ease;
 }
-.token-input:focus {
-  border-color: var(--warning);
-}
-.token-toggle-btn {
-  position: absolute;
-  right: 14px;
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px;
-}
-.token-toggle-btn:hover { color: var(--text-primary); }
 
-.modal-actions {
+.vault-input:focus {
+  border-color: var(--text-main);
+}
+
+.vault-modal-actions {
   display: flex;
   gap: 12px;
 }
-.modal-btn {
+
+.vault-btn {
   flex: 1;
   padding: 14px;
-  border-radius: 14px;
-  font-weight: 700;
-  font-size: 14px;
+  border-radius: 12px;
   font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
   border: none;
   transition: all 0.2s;
 }
-.modal-cancel {
-  background: var(--panel-card);
-  color: var(--text-primary);
-  border: 1px solid var(--border-glow);
+
+.vault-btn-cancel {
+  background: var(--surface-card);
+  color: var(--text-main);
+  border: 1px solid var(--border-neon);
 }
-.modal-cancel:hover { background: var(--border-glow); }
-.modal-confirm {
-  background: var(--danger);
-  color: white;
+
+.vault-btn-confirm {
+  background: var(--text-main);
+  color: var(--bg-core);
 }
-.modal-confirm:hover { opacity: 0.9; }
-.modal-confirm.token-save-btn {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
+
+.vault-btn-danger {
+  background: var(--system-red);
+  color: #fff;
 }
+
+.hidden { display: none !important; }
 
 /* SYSTEM RESPONSIVENESS BUILD */
-@media(max-width: 768px) {
-  nav { padding: 16px 24px; }
-  .hamburger { display: flex; }
-
-  .nav-right {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: var(--panel-bg);
-    backdrop-filter: var(--glass-blur);
-    padding: 30px 24px;
-    box-shadow: 0 30px 40px rgba(0,0,0,0.4);
-    border-bottom: 1px solid var(--border-glow);
-    gap: 16px;
-    align-items: stretch;
-  }
-
-  .nav-right.mobile-open { display: flex; }
-  #storageText { text-align: center; }
-  .gallery { gap: 24px; }
-  .card-img-wrapper { height: 210px; }
+@media(max-width: 900px) {
+  .nav-dock-container { padding: 16px 16px 0; }
+  nav { padding: 12px 20px; }
+  .telemetry-badge { display: none; }
+  .app-workspace { padding: 40px 16px; }
+  .hyper-dropzone { padding: 80px 20px; }
+  .zone-headline { font-size: 28px; }
 }
 
-@media(max-width: 480px) {
-  .container { padding: 40px 16px; }
-  .upload-box { padding: 60px 20px; }
-  .upload-box h2 { font-size: 24px; min-height: 38px; }
-  .gallery {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 14px;
-  }
-  .card-img-wrapper { height: 140px; }
-  .card-body { padding: 14px; gap: 12px; }
-  .card-title { font-size: 11px; }
-  .small-btn { padding: 10px 4px; font-size: 11px; border-radius: 10px; }
+@media(max-width: 600px) {
+  .hamburger { display: flex; }
+  .nav-actions-desktop { display: none; }
+  .gallery-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="logo" onclick="showUpload()">GitDrive</div>
-  
-  <button class="hamburger" id="hamburgerBtn" aria-label="Toggle Navigation">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
-  
-  <div class="nav-right" id="navDropdown">
-    <div id="storageText">Storage Used: 0.00 MB</div>
-    <button class="nav-btn token-btn" onclick="openTokenModal()">Set Token</button>
-    <button class="nav-btn active" id="menuUpload" onclick="showUpload()">Upload Space</button>
-    <button class="nav-btn" id="menuGallery" onclick="showGallery()">Gallery View</button>
-    
-    <button class="theme-toggle" id="themeToggleBtn" title="Toggle Theme">
-      <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
-    </button>
-  </div>
-</nav>
+<!-- GRADIENT AMBIENT CANVAS LAYER -->
+<div class="liquid-bg-engine">
+  <div class="liquid-orb orb-1"></div>
+  <div class="liquid-orb orb-2"></div>
+  <div class="liquid-orb orb-3"></div>
+</div>
 
-<div class="container">
-  <!-- UPLOAD SECTION -->
-  <div id="uploadSection">
-    <div class="upload-box" id="dropArea" onclick="document.getElementById('fileInput').click()">
-      <h2 id="typewriterHeading">Drag & Drop Image Here</h2>
-      <p>Supports PNG, JPG, GIF, WebP up to 10MB</p>
-      <input type="file" id="fileInput" accept="image/*">
-      <button class="select-btn" onclick="event.stopPropagation(); document.getElementById('fileInput').click()">
-        Browse Files
+<div class="nav-dock-container">
+  <nav>
+    <div class="brand-wrapper" onclick="toggleWorkspace('upload')">
+      <div class="brand-icon"></div>
+      <div class="logo">GitDrive<span>//Hub</span></div>
+    </div>
+    
+    <div class="nav-actions">
+      <div class="telemetry-badge" id="telemetryBadge">Telemetry: 0.00 MB</div>
+      <div class="nav-actions-desktop">
+        <button class="dock-btn active" id="dockUpload" onclick="toggleWorkspace('upload')">Terminal Area</button>
+        <button class="dock-btn" id="dockGallery" onclick="toggleWorkspace('gallery')">Archive Index</button>
+        <button class="dock-btn dock-btn-accent" onclick="triggerVaultGate()">Identity Key</button>
+      </div>
+      <button class="action-icon-btn" id="canvasThemeToggle" style="margin-left: 8px;">
+        <svg id="themeIconGlyph" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
       </button>
     </div>
+  </nav>
+</div>
 
-    <div class="progress-container" id="progressContainer">
-      <div class="progress-bg">
-        <div class="progress-bar" id="progressBar"></div>
+<div class="app-workspace">
+  <!-- INTERFACE PANEL: UPLOAD CONSOLE -->
+  <div id="panelUploadSpace">
+    <div class="hyper-dropzone" id="dropZoneContainer" onclick="triggerFilePicker()">
+      <div class="zone-decor-ring"></div>
+      <div class="zone-content">
+        <h2 class="zone-headline" id="cyclicalTypingText">Initialize Asset Feed</h2>
+        <p class="zone-sub">Drop standard matrix image elements inside perimeter</p>
+        <input type="file" id="binaryInput" accept="image/*" class="hidden">
+        <button class="action-terminal-btn" onclick="event.stopPropagation(); triggerFilePicker()">Scan Filesystem</button>
       </div>
-      <div class="progress-text" id="progressText">0%</div>
     </div>
 
-    <div class="output-box hidden" id="outputBox">
-      <div class="output-header">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-        <span>Upload Process processed Successfully</span>
+    <div class="telemetry-pipeline" id="pipelineContainer">
+      <div class="pipeline-meta">
+        <span id="pipelineStatusMessage">Streaming binary packet buffer...</span>
+        <span id="pipelinePercentage">0%</span>
       </div>
-      <div class="url-display-wrapper">
-        <div id="imageUrl"></div>
-        <button class="copy-btn" id="copyMainBtn">Copy Link</button>
+      <div class="pipeline-track">
+        <div class="pipeline-fill" id="pipelineFill"></div>
       </div>
-      <div class="preview-container">
-        <img id="previewImage" alt="Asset Preview">
+    </div>
+
+    <div class="terminal-card hidden" id="terminalConsoleOutput">
+      <div class="terminal-status-row">
+        <div class="status-pulse"></div>
+        <span>Packet routed successfully — Transaction complete</span>
+      </div>
+      <div class="terminal-input-group">
+        <div class="terminal-url-anchor" id="terminalUrlData"></div>
+        <button class="action-terminal-btn" id="terminalCopyAction">Copy Matrix Link</button>
+      </div>
+      <div class="terminal-viewscreen">
+        <img id="terminalImgPreview" alt="Routing Engine Preview">
       </div>
     </div>
   </div>
 
-  <!-- GALLERY SECTION -->
-  <div id="gallerySection" class="hidden">
-    <h2 class="gallery-title">Cloud Archive Assets</h2>
-    <div class="gallery" id="gallery"></div>
-    <div class="empty-text" id="emptyText">No images found in your 'uploads' folder yet.</div>
+  <!-- INTERFACE PANEL: ARCHIVE VIEW -->
+  <div id="panelGallerySpace" class="hidden">
+    <div class="section-header-block">
+      <h2 class="section-title">Indexed Repositories</h2>
+      <div class="section-counter" id="archiveMetrics">0 units found</div>
+    </div>
+    <div class="gallery-grid" id="archiveMeshGrid"></div>
+    <div class="void-msg" id="voidNotification">Index directory empty. No active data blocks loaded inside root node.</div>
   </div>
 </div>
 
-<!-- TOKEN CONFIGURATION MODAL OVERRIDE -->
-<div class="modal-overlay" id="tokenModal">
-  <div class="modal-card">
-    <div class="modal-icon token-icon-style">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+<!-- OVERLAY SHIELD: KEY AUTH SYSTEM -->
+<div class="overlay-shield" id="vaultGateOverlay">
+  <div class="vault-modal">
+    <div class="vault-icon vault-icon-secure">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
     </div>
-    <h3>GitHub Token Configuration</h3>
-    <p>Please enter your active GitHub Personal Access Token (PAT):</p>
-    
-    <div class="token-input-wrapper">
-      <input type="password" class="token-input" id="tokenModalInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
-      <button class="token-toggle-btn" id="tokenToggleVisibilityBtn" title="Toggle Token Visibility">
-        <svg id="tokenVisibilityIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-          <circle cx="12" cy="12" r="3"></circle>
-        </svg>
-      </button>
+    <h3>Secure Core Architecture</h3>
+    <p>Inject your active cryptographic GitHub Personal Access Token parameter below to link operations:</p>
+    <div class="vault-input-container">
+      <input type="password" class="vault-input" id="vaultKeyString" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
     </div>
-
-    <div class="modal-actions">
-      <button class="modal-btn modal-cancel" id="tokenCancelBtn">Cancel</button>
-      <button class="modal-btn modal-confirm token-save-btn" id="tokenSaveBtn">Save Changes</button>
+    <div class="vault-modal-actions">
+      <button class="vault-btn vault-btn-cancel" onclick="dismissVaultGate()">Abort</button>
+      <button class="vault-btn vault-btn-confirm" onclick="commitVaultKey()">Sync Configuration</button>
     </div>
   </div>
 </div>
 
-<!-- NATIVE MODAL BOX SYSTEM OVERRIDE FOR BOX COMPLIANCE -->
-<div class="modal-overlay" id="deleteModal">
-  <div class="modal-card">
-    <div class="modal-icon">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+<!-- OVERLAY SHIELD: PURGE ACTION TERMINATION -->
+<div class="overlay-shield" id="purgeConfirmationOverlay">
+  <div class="vault-modal">
+    <div class="vault-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
     </div>
-    <h3>Delete Asset Permanently?</h3>
-    <p id="modalFileName">file_name.png</p>
-    <div class="modal-actions">
-      <button class="modal-btn modal-cancel" id="modalCancelBtn">Cancel</button>
-      <button class="modal-btn modal-confirm" id="modalConfirmBtn">Delete Asset</button>
+    <h3>Purge Binary Block?</h3>
+    <p id="purgeTargetLabel" style="word-break: break-all; font-family: 'JetBrains Mono', monospace; font-size:12px;"></p>
+    <div class="vault-modal-actions">
+      <button class="vault-btn vault-btn-cancel" onclick="dismissPurgeModal()">Abort</button>
+      <button class="vault-btn vault-btn-danger" id="executePurgeBtn">Confirm Purge</button>
     </div>
   </div>
 </div>
 
-<!-- CUSTOM ERROR/ALERT CSS MODAL OVERRIDE -->
-<div class="modal-overlay" id="alertModal">
-  <div class="modal-card">
-    <div class="modal-icon">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+<!-- OVERLAY SHIELD: NOTIFICATION ALERTS -->
+<div class="overlay-shield" id="noticeOverlaySystem">
+  <div class="vault-modal">
+    <div class="vault-icon" style="background:rgba(6,182,212,0.1); color:var(--neon-cyan);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
     </div>
-    <h3 id="alertModalTitle">Notification</h3>
-    <p id="alertModalMessage">Something went wrong.</p>
-    <div class="modal-actions">
-      <button class="modal-btn modal-cancel" style="width:100%" id="alertCloseBtn">Dismiss</button>
-    </div>
+    <h3 id="noticeTitleNode">Log Alert</h3>
+    <p id="noticeMsgNode"></p>
+    <button class="vault-btn vault-btn-cancel" style="width: 100%" onclick="closeNoticeLog()">Dismiss Trace</button>
   </div>
 </div>
 
 <script>
-const GITHUB_USERNAME = "technow-byte";
-const REPO_NAME = "images-url";
-const BRANCH = "main";
+const ENGINE_USER = "technow-byte";
+const ENGINE_REPO = "images-url";
+const ENGINE_BRANCH = "main";
 
-let TOKEN = localStorage.getItem("GH_UP_TOKEN") || "";
+let SYSTEM_KEY = localStorage.getItem("GH_UP_TOKEN") || "";
 
-const dropArea = document.getElementById("dropArea");
-const fileInput = document.getElementById("fileInput");
-const progressContainer = document.getElementById("progressContainer");
-const progressBar = document.getElementById("progressBar");
-const progressText = document.getElementById("progressText");
-const outputBox = document.getElementById("outputBox");
-const imageUrl = document.getElementById("imageUrl");
-const previewImage = document.getElementById("previewImage");
-const copyMainBtn = document.getElementById("copyMainBtn");
-const gallery = document.getElementById("gallery");
-const emptyText = document.getElementById("emptyText");
-const storageText = document.getElementById("storageText");
-const hamburgerBtn = document.getElementById("hamburgerBtn");
-const navDropdown = document.getElementById("navDropdown");
-const themeToggleBtn = document.getElementById("themeToggleBtn");
-const themeIcon = document.getElementById("themeIcon");
+const dropZoneContainer = document.getElementById("dropZoneContainer");
+const binaryInput = document.getElementById("binaryInput");
+const pipelineContainer = document.getElementById("pipelineContainer");
+const pipelineFill = document.getElementById("pipelineFill");
+const pipelinePercentage = document.getElementById("pipelinePercentage");
+const terminalConsoleOutput = document.getElementById("terminalConsoleOutput");
+const terminalUrlData = document.getElementById("terminalUrlData");
+const terminalImgPreview = document.getElementById("terminalImgPreview");
+const terminalCopyAction = document.getElementById("terminalCopyAction");
+const archiveMeshGrid = document.getElementById("archiveMeshGrid");
+const voidNotification = document.getElementById("voidNotification");
+const telemetryBadge = document.getElementById("telemetryBadge");
+const archiveMetrics = document.getElementById("archiveMetrics");
 
-// Custom Confirmation Modal Elements
-const deleteModal = document.getElementById("deleteModal");
-const modalFileName = document.getElementById("modalFileName");
-const modalCancelBtn = document.getElementById("modalCancelBtn");
-const modalConfirmBtn = document.getElementById("modalConfirmBtn");
-let pendingDeleteData = null;
+let cachedUrlPath = "";
+let purgeBlockRef = null;
 
-// Custom Token Modal Elements
-const tokenModal = document.getElementById("tokenModal");
-const tokenModalInput = document.getElementById("tokenModalInput");
-const tokenCancelBtn = document.getElementById("tokenCancelBtn");
-const tokenSaveBtn = document.getElementById("tokenSaveBtn");
-const tokenToggleVisibilityBtn = document.getElementById("tokenToggleVisibilityBtn");
-const tokenVisibilityIcon = document.getElementById("tokenVisibilityIcon");
+// CANVAS APP MOOD STATE CONFIG
+const systemTheme = localStorage.getItem("sys-theme-engine") || "dark";
+document.documentElement.setAttribute("data-theme", systemTheme);
+refreshThemeIconGlyph(systemTheme);
 
-// Custom Notification Alert Elements
-const alertModal = document.getElementById("alertModal");
-const alertModalTitle = document.getElementById("alertModalTitle");
-const alertModalMessage = document.getElementById("alertModalMessage");
-const alertCloseBtn = document.getElementById("alertCloseBtn");
-
-let latestUrl = "";
-
-const savedTheme = localStorage.getItem("app-theme") || "dark";
-document.documentElement.setAttribute("data-theme", savedTheme);
-updateThemeIcon(savedTheme);
-
-themeToggleBtn.addEventListener("click", () => {
-  const currentTheme = document.documentElement.getAttribute("data-theme");
-  const newTheme = currentTheme === "light" ? "dark" : "light";
-  document.documentElement.setAttribute("data-theme", newTheme);
-  localStorage.setItem("app-theme", newTheme);
-  updateThemeIcon(newTheme);
+document.getElementById("canvasThemeToggle").addEventListener("click", () => {
+  const current = document.documentElement.getAttribute("data-theme");
+  const target = current === "light" ? "dark" : "light";
+  document.documentElement.setAttribute("data-theme", target);
+  localStorage.setItem("sys-theme-engine", target);
+  refreshThemeIconGlyph(target);
 });
 
-function updateThemeIcon(theme) {
-  if (theme === "light") {
-    themeIcon.innerHTML = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
+function refreshThemeIconGlyph(themeState) {
+  const glyph = document.getElementById("themeIconGlyph");
+  if (themeState === "light") {
+    glyph.innerHTML = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
   } else {
-    themeIcon.innerHTML = `<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>`;
+    glyph.innerHTML = `<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>`;
   }
 }
 
-// TOGGLE HAMBURGER ICON AND SPREAD MOBILE INTERFACE
-hamburgerBtn.addEventListener("click", () => {
-  hamburgerBtn.classList.toggle("open");
-  navDropdown.classList.toggle("mobile-open");
-});
-
-function closeMobileMenu() {
-  hamburgerBtn.classList.remove("open");
-  navDropdown.classList.remove("mobile-open");
+function runtimeDisplayNotice(headline, infoLog) {
+  document.getElementById("noticeTitleNode").innerText = headline;
+  document.getElementById("noticeMsgNode").innerText = infoLog;
+  document.getElementById("noticeOverlaySystem").classList.add("active");
 }
 
-function checkToken() {
-  if (!TOKEN) {
-    setTimeout(() => { openTokenModal(); }, 500);
-  }
+function closeNoticeLog() {
+  document.getElementById("noticeOverlaySystem").classList.remove("active");
 }
 
-function triggerCustomAlert(title, message) {
-  alertModalTitle.innerText = title;
-  alertModalMessage.innerText = message;
-  alertModal.classList.add("modal-open");
+function triggerVaultGate() {
+  document.getElementById("vaultKeyString").value = SYSTEM_KEY;
+  document.getElementById("vaultGateOverlay").classList.add("active");
 }
 
-alertCloseBtn.addEventListener("click", () => {
-  alertModal.classList.remove("modal-open");
-});
-
-function openTokenModal() {
-  tokenModalInput.value = TOKEN;
-  tokenModalInput.type = "password";
-  updateTokenIconState(false);
-  tokenModal.classList.add("modal-open");
-  closeMobileMenu();
+function dismissVaultGate() {
+  document.getElementById("vaultGateOverlay").classList.remove("active");
 }
 
-tokenToggleVisibilityBtn.addEventListener("click", () => {
-  const isProtected = tokenModalInput.type === "password";
-  tokenModalInput.type = isProtected ? "text" : "password";
-  updateTokenIconState(isProtected);
-});
+function commitVaultKey() {
+  SYSTEM_KEY = document.getElementById("vaultKeyString").value.trim();
+  localStorage.setItem("GH_UP_TOKEN", SYSTEM_KEY);
+  dismissVaultGate();
+  syncArchiveEcosystem();
+  pollTelemetryMatrix();
+}
 
-function updateTokenIconState(isVisible) {
-  if (isVisible) {
-    tokenVisibilityIcon.innerHTML = `
-      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-      <line x1="1" y1="1" x2="23" y2="23"></line>
-    `;
+function toggleWorkspace(workspaceMode) {
+  const panelUpload = document.getElementById("panelUploadSpace");
+  const panelGallery = document.getElementById("panelGallerySpace");
+  const dockUpload = document.getElementById("dockUpload");
+  const dockGallery = document.getElementById("dockGallery");
+
+  if(workspaceMode === 'upload') {
+    panelUpload.classList.remove("hidden");
+    panelGallery.classList.add("hidden");
+    dockUpload.classList.add("active");
+    dockGallery.classList.remove("active");
   } else {
-    tokenVisibilityIcon.innerHTML = `
-      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-      <circle cx="12" cy="12" r="3"></circle>
-    `;
+    panelUpload.classList.add("hidden");
+    panelGallery.classList.remove("hidden");
+    dockUpload.classList.remove("active");
+    dockGallery.classList.add("active");
+    syncArchiveEcosystem();
   }
 }
 
-tokenCancelBtn.addEventListener("click", () => {
-  tokenModal.classList.remove("modal-open");
-});
+function triggerFilePicker() {
+  binaryInput.click();
+}
 
-tokenSaveBtn.addEventListener("click", () => {
-  TOKEN = tokenModalInput.value.trim();
-  localStorage.setItem("GH_UP_TOKEN", TOKEN);
-  tokenModal.classList.remove("modal-open");
-  loadGallery();
-  updateStorage();
-});
-
-dropArea.addEventListener("dragover",(e)=>{
+dropZoneContainer.addEventListener("dragover", (e) => {
   e.preventDefault();
-  dropArea.classList.add("dragover");
+  dropZoneContainer.classList.add("dragover");
 });
 
-["dragleave", "drop"].forEach(event => {
-  dropArea.addEventListener(event, () => dropArea.classList.remove("dragover"));
+["dragleave", "drop"].forEach(sig => {
+  dropZoneContainer.addEventListener(sig, () => dropZoneContainer.classList.remove("dragover"));
 });
 
-dropArea.addEventListener("drop",(e)=>{
+dropZoneContainer.addEventListener("drop", (e) => {
   e.preventDefault();
-  const files = e.dataTransfer.files;
-  if(files.length){
-    uploadImage(files[0]);
-  }
+  if(e.dataTransfer.files.length) processBinaryFeed(e.dataTransfer.files[0]);
 });
 
-fileInput.addEventListener("change",()=>{
-  if(fileInput.files.length){
-    uploadImage(fileInput.files[0]);
-  }
+binaryInput.addEventListener("change", () => {
+  if(binaryInput.files.length) processBinaryFeed(binaryInput.files[0]);
 });
 
-function showUpload(){
-  document.getElementById("uploadSection").classList.remove("hidden");
-  document.getElementById("gallerySection").classList.add("hidden");
-  document.getElementById("menuUpload").classList.add("active");
-  document.getElementById("menuGallery").classList.remove("active");
-  closeMobileMenu();
-}
-
-function showGallery(){
-  document.getElementById("uploadSection").classList.add("hidden");
-  document.getElementById("gallerySection").classList.remove("hidden");
-  document.getElementById("menuUpload").classList.remove("active");
-  document.getElementById("menuGallery").classList.add("active");
-  loadGallery();
-  closeMobileMenu();
-}
-
-copyMainBtn.addEventListener("click",()=>{
-  if(!latestUrl) return;
-  navigator.clipboard.writeText(latestUrl);
-  copyMainBtn.innerText = "Copied link!";
-  setTimeout(()=>{
-    copyMainBtn.innerText = "Copy Link";
-  },2000);
-});
-
-function uploadImage(file){
-  if(!TOKEN) {
-    triggerCustomAlert("Configuration Missing", "Please assign a valid active GitHub Token configuration using the 'Set Token' interface panel first.");
-    openTokenModal();
+function processBinaryFeed(elementFile) {
+  if(!SYSTEM_KEY) {
+    runtimeDisplayNotice("Missing Identity Key", "Security core requires a valid GitHub Access Token string configuration before executing streams.");
+    triggerVaultGate();
     return;
   }
-  if(!file.type.startsWith("image/")){
-    triggerCustomAlert("Format Invalid", "Invalid asset syntax format configuration processing dropped.");
+  if(!elementFile.type.startsWith("image/")) {
+    runtimeDisplayNotice("Payload Blocked", "Unrecognized stream formatting type configuration. Drop aborted.");
     return;
   }
 
-  progressContainer.style.display = "block";
-  outputBox.classList.add("hidden");
-  updateProgress(0);
+  pipelineContainer.style.display = "block";
+  terminalConsoleOutput.classList.add("hidden");
+  refreshStreamBar(0);
 
-  const reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onload = function() {
-    const base64Data = reader.result.split(",")[1];
-    const fileName = Date.now() + "_" + file.name.replace(/\s+/g,"_");
-    const path = `uploads/${fileName}`;
-    const apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/${path}`;
+  const dynamicReader = new FileReader();
+  dynamicReader.readAsDataURL(elementFile);
+  dynamicReader.onload = function() {
+    const directBase64 = dynamicReader.result.split(",")[1];
+    const computedName = Date.now() + "_" + elementFile.name.replace(/\s+/g, "_");
+    const networkPath = `uploads/${computedName}`;
+    const targetEndpoint = `https://api.github.com/repos/${ENGINE_USER}/${ENGINE_REPO}/contents/${networkPath}`;
 
-    const xhr = new XMLHttpRequest();
-    xhr.open("PUT", apiUrl, true);
-    
-    xhr.setRequestHeader("Authorization", `Bearer ${TOKEN}`);
-    xhr.setRequestHeader("Accept", "application/vnd.github+v3+json");
-    xhr.setRequestHeader("Content-Type", "application/json");
+    const clientRequest = new XMLHttpRequest();
+    clientRequest.open("PUT", targetEndpoint, true);
+    clientRequest.setRequestHeader("Authorization", `Bearer ${SYSTEM_KEY}`);
+    clientRequest.setRequestHeader("Accept", "application/vnd.github+v3+json");
+    clientRequest.setRequestHeader("Content-Type", "application/json");
 
-    xhr.upload.onprogress = function(e) {
-      if (e.lengthComputable) {
-        const percentComplete = Math.round((e.loaded / e.total) * 100);
-        updateProgress(Math.min(percentComplete, 95));
+    clientRequest.upload.onprogress = function(progressEvent) {
+      if (progressEvent.lengthComputable) {
+        const structuralRatio = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+        refreshStreamBar(Math.min(structuralRatio, 92));
       }
     };
 
-    xhr.onload = function() {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        updateProgress(100);
-        const publicUrl = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${REPO_NAME}/${BRANCH}/${path}`;
-        latestUrl = publicUrl;
+    clientRequest.onload = function() {
+      if (clientRequest.status >= 200 && clientRequest.status < 300) {
+        refreshStreamBar(100);
+        const unifiedUrl = `https://raw.githubusercontent.com/${ENGINE_USER}/${ENGINE_REPO}/${ENGINE_BRANCH}/${networkPath}`;
+        cachedUrlPath = unifiedUrl;
 
-        imageUrl.innerHTML = `<a href="${publicUrl}" target="_blank">${publicUrl}</a>`;
-        previewImage.src = publicUrl;
-        outputBox.classList.remove("hidden");
+        terminalUrlData.innerHTML = `<a href="${unifiedUrl}" target="_blank">${unifiedUrl}</a>`;
+        terminalImgPreview.src = unifiedUrl;
+        terminalConsoleOutput.classList.remove("hidden");
 
         setTimeout(() => {
-          progressContainer.style.display = "none";
-          updateProgress(0);
-        }, 1500);
-
-        setTimeout(() => { updateStorage(); }, 800);
+          pipelineContainer.style.display = "none";
+          refreshStreamBar(0);
+        }, 1200);
+        setTimeout(() => { pollTelemetryMatrix(); }, 500);
       } else {
-        let errMessage = "Bad Credentials / Expired Token Error.";
+        let failureContext = "Bad Credentials / Authorization Fault.";
         try {
-          const res = JSON.parse(xhr.responseText);
-          errMessage = res.message || errMessage;
-        } catch(e){}
-        triggerCustomAlert("Upload Failure", "Operation aborted: " + errMessage + "\n\nIf you pasted your token into a public chat or prompt, GitHub likely auto-revoked it. Please generate a new one.");
-        progressContainer.style.display = "none";
+          const parsing = JSON.parse(clientRequest.responseText);
+          failureContext = parsing.message || failureContext;
+        } catch(err){}
+        runtimeDisplayNotice("Transaction Interrupted", failureContext);
+        pipelineContainer.style.display = "none";
       }
     };
 
-    xhr.onerror = function() {
-      triggerCustomAlert("Connection Error", "Network processing connectivity error encountered.");
-      progressContainer.style.display = "none";
-    };
-
-    const payload = JSON.stringify({
-      message: `Upload ${fileName}`,
-      content: base64Data,
-      branch: BRANCH
-    });
-
-    xhr.send(payload);
+    clientRequest.send(JSON.stringify({
+      message: `Sync node asset: ${computedName}`,
+      content: directBase64,
+      branch: ENGINE_BRANCH
+    }));
   };
 }
 
-function updateProgress(percent){
-  progressBar.style.width = percent + "%";
-  progressText.innerText = percent + "%";
+function refreshStreamBar(ratioValue) {
+  pipelineFill.style.width = ratioValue + "%";
+  pipelinePercentage.innerText = ratioValue + "%";
 }
 
-function getRelativeTimeString(fileName) {
-  const timestampMatch = fileName.match(/^(\d+)_/);
-  if (!timestampMatch) return "";
+terminalCopyAction.addEventListener("click", () => {
+  if(!cachedUrlPath) return;
+  navigator.clipboard.writeText(cachedUrlPath);
+  terminalCopyAction.innerText = "Buffer Copied";
+  setTimeout(() => { terminalCopyAction.innerText = "Copy Matrix Link"; }, 2000);
+});
 
-  const uploadedMillis = parseInt(timestampMatch[1], 10);
-  const diffMillis = Date.now() - uploadedMillis;
+function calculateTemporalStamp(labelData) {
+  const matchArray = labelData.match(/^(\d+)_/);
+  if (!matchArray) return "";
+  const calculatedSeconds = Math.floor((Date.now() - parseInt(matchArray[1], 10)) / 1000);
   
-  const seconds = Math.floor(diffMillis / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
-
-  if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
-  if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-  if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-  return "Just now";
+  if (calculatedSeconds < 60) return "Just now";
+  const calculatedMinutes = Math.floor(calculatedSeconds / 60);
+  if (calculatedMinutes < 60) return `${calculatedMinutes}m ago`;
+  const calculatedHours = Math.floor(calculatedMinutes / 60);
+  if (calculatedHours < 24) return `${calculatedHours}h ago`;
+  return `${Math.floor(calculatedHours / 24)}d ago`;
 }
 
-async function loadGallery(){
-  if(!TOKEN) return;
-  try{
-    const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/uploads?ref=${BRANCH}&t=${Date.now()}`;
-    const response = await fetch(url,{
-      headers:{
-        "Authorization":`Bearer ${TOKEN}`,
+async function syncArchiveEcosystem() {
+  if(!SYSTEM_KEY) return;
+  try {
+    const remoteQueryUrl = `https://api.github.com/repos/${ENGINE_USER}/${ENGINE_REPO}/contents/uploads?ref=${ENGINE_BRANCH}&t=${Date.now()}`;
+    const dynamicFetch = await fetch(remoteQueryUrl, {
+      headers: {
+        "Authorization": `Bearer ${SYSTEM_KEY}`,
         "Accept": "application/vnd.github+v3+json"
       }
     });
 
-    if(response.status === 404) {
-      gallery.innerHTML = "";
-      emptyText.style.display = "block";
+    if(dynamicFetch.status === 404) {
+      archiveMeshGrid.innerHTML = "";
+      voidNotification.style.display = "block";
+      archiveMetrics.innerText = "0 units indexed";
       return;
     }
 
-    if(!response.ok) throw new Error("Could not fetch repo assets list.");
+    if(!dynamicFetch.ok) throw new Error("Index response processing failed.");
+    const payloadCollection = await dynamicFetch.json();
+    archiveMeshGrid.innerHTML = "";
 
-    const files = await response.json();
-    gallery.innerHTML = "";
-
-    if(!Array.isArray(files) || files.length === 0){
-      emptyText.style.display = "block";
+    if(!Array.isArray(payloadCollection) || payloadCollection.length === 0) {
+      voidNotification.style.display = "block";
+      archiveMetrics.innerText = "0 units indexed";
       return;
     }
 
-    emptyText.style.display = "none";
-    const extendedFiles = [...files].reverse();
+    voidNotification.style.display = "none";
+    const systemicInversion = [...payloadCollection].reverse();
+    archiveMetrics.innerText = `${systemicInversion.length} units indexed`;
 
-    extendedFiles.forEach(file=>{
-      if(file.type === "dir" || file.name === ".gitkeep") return;
+    systemicInversion.forEach(blockNode => {
+      if(blockNode.type === "dir" || blockNode.name === ".gitkeep") return;
       
-      const publicUrl = `https://raw.githubusercontent.com/${GITHUB_USERNAME}/${REPO_NAME}/${BRANCH}/uploads/${file.name}`;
-      const timeWatermark = getRelativeTimeString(file.name);
-      const card = document.createElement("div");
-      card.className = "card";
+      const absoluteMediaUrl = `https://raw.githubusercontent.com/${ENGINE_USER}/${ENGINE_REPO}/${ENGINE_BRANCH}/uploads/${blockNode.name}`;
+      const internalAgeWatermark = calculateTemporalStamp(blockNode.name);
       
-      card.innerHTML = `
-        <div class="card-img-wrapper">
-          ${timeWatermark ? `<div class="watermark">${timeWatermark}</div>` : ''}
-          <img src="${publicUrl}" alt="Asset Preview" loading="lazy">
+      const componentCard = document.createElement("div");
+      componentCard.className = "asset-card";
+      componentCard.innerHTML = `
+        <div class="asset-screen">
+          ${internalAgeWatermark ? `<div class="asset-badge">${internalAgeWatermark}</div>` : ''}
+          <img src="${absoluteMediaUrl}" alt="Indexed Node" loading="lazy">
         </div>
-        <div class="card-body">
-          <div class="card-title" title="${file.name}">${file.name}</div>
-          <div class="card-buttons">
-            <button class="small-btn copy-small">Copy Link</button>
-            <button class="small-btn delete-small">Delete</button>
+        <div class="asset-meta-box">
+          <div class="asset-label" title="${blockNode.name}">${blockNode.name}</div>
+          <div class="asset-control-row">
+            <button class="control-btn control-btn-primary action-copy">Copy Link</button>
+            <button class="control-btn control-btn-danger action-purge">Purge</button>
           </div>
         </div>
       `;
 
-      const copyBtn = card.querySelector(".copy-small");
-      const deleteBtn = card.querySelector(".delete-small");
-
-      copyBtn.addEventListener("click",()=>{
-        navigator.clipboard.writeText(publicUrl);
-        copyBtn.innerText = "Copied!";
-        setTimeout(()=>{ copyBtn.innerText = "Copy Link"; },1500);
+      componentCard.querySelector(".action-copy").addEventListener("click", (e) => {
+        navigator.clipboard.writeText(absoluteMediaUrl);
+        e.target.innerText = "Copied";
+        setTimeout(() => { e.target.innerText = "Copy Link"; }, 1500);
       });
 
-      deleteBtn.addEventListener("click", () => {
-        pendingDeleteData = { name: file.name, sha: file.sha };
-        modalFileName.innerText = file.name;
-        deleteModal.classList.add("modal-open");
+      componentCard.querySelector(".action-purge").addEventListener("click", () => {
+        purgeBlockRef = { name: blockNode.name, sha: blockNode.sha };
+        document.getElementById("purgeTargetLabel").innerText = blockNode.name;
+        document.getElementById("purgeConfirmationOverlay").classList.add("active");
       });
 
-      gallery.appendChild(card);
+      archiveMeshGrid.appendChild(componentCard);
     });
-  }
-  catch(error){
-    console.error(error);
+  } catch(err) {
+    console.error(err);
   }
 }
 
-modalCancelBtn.addEventListener("click", () => {
-  deleteModal.classList.remove("modal-open");
-  pendingDeleteData = null;
-});
+function dismissPurgeModal() {
+  document.getElementById("purgeConfirmationOverlay").classList.remove("active");
+  purgeBlockRef = null;
+}
 
-modalConfirmBtn.addEventListener("click", async () => {
-  if (pendingDeleteData) {
-    const { name, sha } = pendingDeleteData;
-    deleteModal.classList.remove("modal-open");
-    await deleteImage(name, sha);
-    pendingDeleteData = null;
+document.getElementById("executePurgeBtn").addEventListener("click", async () => {
+  if (purgeBlockRef) {
+    const { name, sha } = purgeBlockRef;
+    dismissPurgeModal();
+    await executeCorePurge(name, sha);
   }
 });
 
-async function deleteImage(fileName, sha){
-  try{
-    const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/uploads/${fileName}`;
-    const response = await fetch(url,{
-      method:"DELETE",
-      headers:{
-        "Authorization":`Bearer ${TOKEN}`,
-        "Content-Type":"application/json",
+async function executeCorePurge(targetLabel, targetSha) {
+  try {
+    const destructionEndpoint = `https://api.github.com/repos/${ENGINE_USER}/${ENGINE_REPO}/contents/uploads/${targetLabel}`;
+    const executeNetworkAction = await fetch(destructionEndpoint, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${SYSTEM_KEY}`,
+        "Content-Type": "application/json",
         "Accept": "application/vnd.github+v3+json"
       },
-      body:JSON.stringify({
-        message: `Delete asset payload: ${fileName}`,
-        sha: sha,
-        branch: BRANCH
+      body: JSON.stringify({
+        message: `Purge asset block node: ${targetLabel}`,
+        sha: targetSha,
+        branch: ENGINE_BRANCH
       })
     });
 
-    if(!response.ok) {
-      const parsedErr = await response.json();
-      throw new Error(parsedErr.message || "File clear action breakdown.");
-    }
-
-    setTimeout(async () => {
-      await loadGallery();
-      await updateStorage();
-    }, 600);
-  }
-  catch(error){
-    console.error(error);
-    triggerCustomAlert("Structural Fault", "Execution error structural fault: " + error.message);
+    if(!executeNetworkAction.ok) throw new Error("Purge request handshaking dropped.");
+    setTimeout(() => {
+      syncArchiveEcosystem();
+      pollTelemetryMatrix();
+    }, 500);
+  } catch(error) {
+    runtimeDisplayNotice("Purge Aborted", error.message);
   }
 }
 
-async function updateStorage(){
-  if(!TOKEN) return;
-  try{
-    const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/uploads?ref=${BRANCH}&t=${Date.now()}`;
-    const response = await fetch(url,{
-      headers:{
-        "Authorization":`Bearer ${TOKEN}`,
+async function pollTelemetryMatrix() {
+  if(!SYSTEM_KEY) return;
+  try {
+    const evaluationUrl = `https://api.github.com/repos/${ENGINE_USER}/${ENGINE_REPO}/contents/uploads?ref=${ENGINE_BRANCH}&t=${Date.now()}`;
+    const responseChannel = await fetch(evaluationUrl, {
+      headers: {
+        "Authorization": `Bearer ${SYSTEM_KEY}`,
         "Accept": "application/vnd.github+v3+json"
       }
     });
 
-    let totalBytes = 0;
-    if(response.ok){
-      const files = await response.json();
-      if(Array.isArray(files)){
-        files.forEach(file=>{
-          if(file.size) totalBytes += file.size;
+    let cumulativeBytes = 0;
+    if(responseChannel.ok) {
+      const parsedArray = await responseChannel.json();
+      if(Array.isArray(parsedArray)) {
+        parsedArray.forEach(nodeItem => {
+          if(nodeItem.size) cumulativeBytes += nodeItem.size;
         });
       }
     }
-    const totalMB = (totalBytes / (1024 * 1024)).toFixed(2);
-    storageText.innerText = `Storage Used: ${totalMB} MB`;
-  }
-  catch(error){
-    console.error(error);
-  }
+    telemetryBadge.innerText = `Telemetry: ${(cumulativeBytes / (1024 * 1024)).toFixed(2)} MB`;
+  } catch(err){}
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  checkToken();
-  loadGallery();
-  updateStorage();
-  initTypewriterEffect();
+  if(!SYSTEM_KEY) setTimeout(() => { triggerVaultGate(); }, 600);
+  syncArchiveEcosystem();
+  pollTelemetryMatrix();
+  initCyclingTypographyEngine();
 });
 
-function initTypewriterEffect() {
-  const words = ["Drag & Drop Image Here", "Instantly Host Your Assets", "Powered by GitHub Infra"];
-  let wordIndex = 0;
-  let charIndex = 0;
-  let isDeleting = false;
-  const targetElement = document.getElementById("typewriterHeading");
+function initCyclingTypographyEngine() {
+  const dictionary = ["Initialize Asset Feed", "Deploy Binary Packets", "Host Through Git Infra"];
+  let sequence = 0, character = 0, reversing = false;
+  const mountTarget = document.getElementById("cyclicalTypingText");
   
-  function type() {
-    const currentWord = words[wordIndex];
-    
-    if (isDeleting) {
-      targetElement.innerText = currentWord.substring(0, charIndex - 1);
-      charIndex--;
+  function step() {
+    const structuralString = dictionary[sequence];
+    if (reversing) {
+      mountTarget.innerText = structuralString.substring(0, character - 1);
+      character--;
     } else {
-      targetElement.innerText = currentWord.substring(0, charIndex + 1);
-      charIndex++;
+      mountTarget.innerText = structuralString.substring(0, character + 1);
+      character++;
     }
     
-    let typeSpeed = isDeleting ? 30 : 70;
+    let intervals = reversing ? 35 : 75;
     
-    if (!isDeleting && charIndex === currentWord.length) {
-      typeSpeed = 2000;
-      isDeleting = true;
-    } else if (isDeleting && charIndex === 0) {
-      isDeleting = false;
-      wordIndex = (wordIndex + 1) % words.length;
-      typeSpeed = 400;
+    if (!reversing && character === structuralString.length) {
+      intervals = 2500;
+      reversing = true;
+    } else if (reversing && character === 0) {
+      reversing = false;
+      sequence = (sequence + 1) % dictionary.length;
+      intervals = 400;
     }
-    
-    setTimeout(type, typeSpeed);
+    setTimeout(step, intervals);
   }
-  
-  type();
+  step();
 }
 </script>
 </body>
